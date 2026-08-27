@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle del Libro</title>
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+    <main class="container">
+        <div class="detalle-wrapper" style="display: flex; gap: 30px; margin-top: 40px;">
+            <img id="libro-img" src="" alt="Portada" style="max-width: 300px; border-radius: 8px;">
+            <div class="libro-info-detalle">
+                <h1 id="libro-titulo"></h1>
+                <h3 id="libro-autor" style="color: #666; margin-bottom: 15px;"></h3>
+                <div id="libro-precio" style="font-size: 1.5rem; color: var(--accent-color); font-weight: bold; margin-bottom: 20px;"></div>
+                <p id="libro-descripcion" style="margin-bottom: 25px;"></p>
+                
+                <button id="btn-carrito" class="btn">🛒 Agregar al carrito</button>
+            </div>
+        </div>
+    </main>
+
+    <script src="libros.js"></script>
+    <script src="detalle.js"></script>
+</body>
+</html>
