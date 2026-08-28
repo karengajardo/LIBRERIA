@@ -121,10 +121,10 @@ const catalogoLibros = [
         novedad: true
     },
     {
-        titulo: "El Coronel no tiene quién le escriba",
+        titulo: "El amor en tiempos de cólera",
         autor: "Gabriel Garcia Marquez",
         precio: "$12.000",
-        imagen: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6Qu-rK5xciujdyV-ayeeUScE1f_axh0r4-ltcJY0qbg&s=10",
+        imagen: "https://www.penguinlibros.com/cl/51532-large_default/el-amor-en-los-tiempos-del-colera.jpg",
         categoria: "clasicos",
         novedad: true
     },
@@ -163,18 +163,18 @@ const catalogoLibros = [
 // 2. Seleccionamos el contenedor donde se dibujarán los libros
 const contenedorLibros = document.querySelector('.book-grid');
 
-// 3. Verificamos en qué página estamos:
-// Si la página tiene el bloque de ".filter-buttons", es el Catálogo. Si no lo tiene, es Novedades.
+// 3. Verificamos en qué página estamos de forma precisa
 const esPaginaCatalogo = document.querySelector('.filter-buttons') !== null;
+const encabezado = document.querySelector('.page-header h1');
+const esPaginaNovedades = encabezado !== null && encabezado.textContent.includes('Llegadas');
 
 // 4. Función inteligente para pintar los libros
 function mostrarLibros(libros, mostrarEtiquetaNuevo = false) {
-    if (!contenedorLibros) return; // Si no hay contenedor, no hace nada
+    if (!contenedorLibros) return;
+     
     
-    // Vaciamos el contenedor primero
     contenedorLibros.innerHTML = '';
 
-    // Dibujamos las tarjetas
     libros.forEach(libro => {
         const etiquetaNuevo = mostrarEtiquetaNuevo ? `<span class="badge-nuevo">Nuevo</span>` : '';
         const tarjetaHTML = `
@@ -185,6 +185,7 @@ function mostrarLibros(libros, mostrarEtiquetaNuevo = false) {
                     <h3 class="book-title">${libro.titulo}</h3>
                     <p class="book-author">${libro.autor}</p>
                     <div class="book-price">${libro.precio}</div>
+                    <button class="btn-agregar" onclick="agregarAlCarrito('${libro.titulo}', '${libro.precio}')">Agregar al carrito</button>
                 </div>
             </div>
         `;
@@ -192,20 +193,54 @@ function mostrarLibros(libros, mostrarEtiquetaNuevo = false) {
     });
 }
 
-// 5. Lógica de renderizado según la página actual
+// 5. Lógica del Buscador Global (Funciona en todas las páginas)
+const buscadorGlobal = document.querySelector('#buscador-global');
+
+if (buscadorGlobal) {
+    // Si presionan "Enter", enviarlos al catálogo guardando su búsqueda en la URL
+    buscadorGlobal.addEventListener('keypress', (evento) => {
+        if (evento.key === 'Enter') {
+            const texto = buscadorGlobal.value.trim();
+            if (texto !== '') {
+                window.location.href = `catalogo.html?buscar=${encodeURIComponent(texto)}`;
+            }
+        }
+    });
+
+    // Si ya estamos dentro del catálogo, busca en tiempo real mientras escriben
+    if (esPaginaCatalogo) {
+        buscadorGlobal.addEventListener('input', (evento) => {
+            const textoBusqueda = evento.target.value.toLowerCase();
+            
+            // Quitamos la clase 'active' de los botones de categoría
+            const botonesFiltro = document.querySelectorAll('.filter-btn');
+            botonesFiltro.forEach(b => b.classList.remove('active'));
+
+            const librosBuscados = catalogoLibros.filter(libro => {
+                return libro.titulo.toLowerCase().includes(textoBusqueda) || libro.autor.toLowerCase().includes(textoBusqueda);
+            });
+            mostrarLibros(librosBuscados, false);
+        });
+    }
+}
+
+// 6. Lógica de renderizado principal
 if (esPaginaCatalogo) {
-    // === CÓDIGO PARA CATÁLOGO ===
+    // Revisar si venimos de otra página y trajimos una palabra clave en el link
+    const parametrosURL = new URLSearchParams(window.location.search);
+    const palabraBuscada = parametrosURL.get('buscar');
+
     const botonesFiltro = document.querySelectorAll('.filter-btn');
 
     botonesFiltro.forEach(boton => {
         boton.addEventListener('click', () => {
-            // Quitar clase 'active' y ponérsela al clickeado
             botonesFiltro.forEach(b => b.classList.remove('active'));
             boton.classList.add('active');
+            
+            // Limpiamos la barra de búsqueda si eligen usar un botón de filtro
+            if (buscadorGlobal) buscadorGlobal.value = ''; 
 
             const filtro = boton.getAttribute('data-filter');
-
-            // Filtrar catálogo
             if (filtro === 'todos') {
                 mostrarLibros(catalogoLibros, false); 
             } else {
@@ -215,13 +250,35 @@ if (esPaginaCatalogo) {
         });
     });
 
-    // Al entrar al catálogo por primera vez, pintar todos los libros sin la etiqueta "Nuevo"
-    mostrarLibros(catalogoLibros, false);
+    // Si había una búsqueda previa al entrar a la página, filtramos directamente
+    if (palabraBuscada) {
+        if (buscadorGlobal) buscadorGlobal.value = palabraBuscada;
+        const textoBusqueda = palabraBuscada.toLowerCase();
+        
+        const librosBuscados = catalogoLibros.filter(libro => {
+            return libro.titulo.toLowerCase().includes(textoBusqueda) || libro.autor.toLowerCase().includes(textoBusqueda);
+        });
+        mostrarLibros(librosBuscados, false);
+    } else {
+        // Si entran normalmente, mostramos todos
+        mostrarLibros(catalogoLibros, false);
+    }
 
-} else {
-    // === CÓDIGO PARA NOVEDADES ===
-    // 1. Buscamos en el catálogo solo los que tienen "novedad: true"
+} else if (esPaginaNovedades) {
+    // Si estamos en Novedades, muestra solo las 4 elegidas con su etiqueta
     const librosNuevos = catalogoLibros.filter(libro => libro.novedad === true);
-    // 2. Los pintamos y le decimos a la función que SÍ ponga la etiqueta "Nuevo" (pasando el true)
     mostrarLibros(librosNuevos, true);
+}
+
+// Inicializar el carrito buscando si ya hay algo guardado
+let carrito = JSON.parse(localStorage.getItem('carritoLibreria')) || [];
+
+function agregarAlCarrito(titulo, precio) {
+    // Agregar el libro al arreglo
+    carrito.push({ titulo, precio });
+    
+    // Guardar el carrito actualizado en el navegador
+    localStorage.setItem('carritoLibreria', JSON.stringify(carrito));
+    
+    alert(`¡${titulo} se agregó a tu carrito!`);
 }
