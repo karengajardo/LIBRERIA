@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Novedades - Párrafo Segundo</title>
-    <!-- Fuente de Google Fonts -->
+    <title>Mi Carrito - Párrafo Segundo</title>
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/css/estilos.css">
+    <link rel="stylesheet" href="estilos.css?v=3">
 </head>
 <body>
 
@@ -17,10 +16,9 @@
             <ul class="nav-links">
                 <li><a href="index.html">Inicio</a></li>
                 <li><a href="catalogo.html">Catálogo</a></li>
-                <!-- Novedades activo -->
-                <li><a href="novedades.html" style="color: var(--accent-color); font-weight: 600;">Novedades</a></li>
+                <li><a href="novedades.html">Novedades</a></li>
                 <li><a href="contacto.html">Contacto</a></li>
-                <li><a href="carrito.html">Carrito 🛒 <span id="contador-carrito" class="badge-carrito">0</span></a></li>
+                <li><a href="carrito.html" style="color: var(--accent-color); font-weight: 600;">Carrito 🛒 <span id="contador-carrito" class="badge-carrito">0</span></a></li>
             </ul>
             <div class="search-nav">
                 <input type="text" id="buscador-global" placeholder="Buscar libro..." class="search-input">
@@ -28,27 +26,22 @@
         </div>
     </header>
 
-    <!-- Encabezado de la página -->
-    <div class="page-header naranja">
-        <h1>Últimas Llegadas</h1>
-        <p>Explora nuestras más recientes incorporaciones literarias.</p>
+    <div class="page-header">
+        <h1>Tu Carrito de Compras</h1>
+        <p>Revisa los libros que has seleccionado antes de finalizar.</p>
     </div>
 
-    <!-- Contenido de Novedades -->
     <main class="container">
-        <!-- CONTENEDOR VACÍO: JavaScript inyectará las novedades aquí -->
-        <div class="book-grid">
-            
+        <!-- Aquí JavaScript pintará los libros que agregaste -->
+        <div id="lista-carrito" class="carrito-container">
+            <!-- Los libros aparecerán aquí -->
         </div>
     </main>
 
-    <!-- Pie de página -->
     <footer>
         <p>&copy; 2026 Librería - Párrafo Segundo. Todos los derechos reservados.</p>
     </footer>
 
-    <!-- Vinculamos el archivo de JavaScript -->
     <script src="libros.js"></script>
-
 </body>
 </html>

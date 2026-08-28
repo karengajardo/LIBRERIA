@@ -14,10 +14,21 @@
 }
 
 body {
+    /* 1. Tus estilos visuales originales */
     font-family: 'Poppins', sans-serif;
     background-color: var(--bg-color);
     color: var(--text-color);
     line-height: 1.6;
+    
+    /* 2. Las reglas de estructura para anclar el footer */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+}
+
+main {
+    flex: 1; /* Estira el contenido para empujar el footer al fondo */
 }
 
 h1, h2, h3 {
@@ -372,4 +383,50 @@ footer p {
 
 .btn-agregar:hover {
     background-color: var(--accent-color);
+}
+
+/* --- Estilos del Carrito --- */
+.badge-carrito {
+    background-color: #e74c3c; /* Un rojo elegante */
+    color: white;
+    border-radius: 50%;
+    padding: 2px 8px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    margin-left: 5px;
+    vertical-align: middle;
+}
+
+/* --- Estilos de la página del Carrito --- */
+.carrito-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.item-carrito {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+    font-family: 'Poppins', sans-serif;
+}
+
+.btn-eliminar {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 5px 15px;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+.carrito-vacio {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #666;
+    padding: 40px;
 }
