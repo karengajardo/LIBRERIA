@@ -7,9 +7,7 @@
     <!-- Fuente de Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <!-- Hoja de estilos CSS -->
-    <link rel="stylesheet" href="../css/estilos.css">
-
-    
+    <link rel="stylesheet" href="../css/estilos.css?v=40">
 </head>
 <body>
 
@@ -44,7 +42,8 @@
             <!-- Formulario -->
             <div class="contact-form">
                 <h2>Envíanos un mensaje</h2>
-                <form action="#" method="POST">
+                <!-- AGREGAMOS EL ID AQUÍ -->
+                <form id="formulario-contacto" action="#" method="POST">
                     <div class="form-group">
                         <label for="nombre">Nombre completo</label>
                         <input type="text" id="nombre" name="nombre" placeholder="Ej. Jane Austen" required>
@@ -65,21 +64,19 @@
             <div class="contact-info">
                 <h3>Información de la Librería</h3>
                 <p>📍 <strong>Dirección:</strong> 
-    <a href="https://www.google.com/maps/dir//Cat%C3%A1logo+Librer%C3%ADa+-+6+Nte.+455,+2520136+Vi%C3%B1a+del+Mar,+Valpara%C3%ADso/@-33.0328145,-71.5367858,15z/data=!4m8!4m7!1m0!1m5!1m1!1s0x9689dde68e7999cb:0x95ee636a3fecc94a!2m2!1d-71.553639!2d-33.0167492?entry=ttu&g_ep=EgoyMDI2MDgyNC4wIKXMDSoASAFQAw%3D%3D" target="_blank" style="text-decoration: underline; color: var(--secondary-color);">
-        6 Nte. 455, Viña del Mar
-    </a>
-</p>
+                    <a href="https://www.google.com/maps/dir//Cat%C3%A1logo+Librer%C3%ADa+-+6+Nte.+455,+2520136+Vi%C3%B1a+del+Mar,+Valpara%C3%ADso/@-33.0328145,-71.5367858,15z/data=!4m8!4m7!1m0!1m5!1m1!1s0x9689dde68e7999cb:0x95ee636a3fecc94a!2m2!1d-71.553639!2d-33.0167492?entry=ttu&g_ep=EgoyMDI2MDgyNC4wIKXMDSoASAFQAw%3D%3D" target="_blank" style="text-decoration: underline; color: var(--secondary-color);">
+                        6 Nte. 455, Viña del Mar
+                    </a>
+                </p>
                 <p>📧 <strong>Email:</strong> parrafosegundo@gmail.com</p>
                 <p>🕒 <strong>Horario:</strong> Lunes a Viernes de 10:00 a 19:00 hrs.</p>
                 
                 <div class="social-links">
-    <h3>Nuestra Comunidad</h3>
-    <p>Únete a la conversación sobre literatura y entérate de nuestros próximos eventos.</p>
-    <!-- Enlace a Instagram -->
-    <a href="https://instagram.com/parrafosegundo" target="_blank">Instagram</a>
-    <!-- Enlace a Substack -->
-    <a href="https://substack.com/@parrafosegundo" target="_blank">Substack</a>
-</div>
+                    <h3>Nuestra Comunidad</h3>
+                    <p>Únete a la conversación sobre literatura y entérate de nuestros próximos eventos.</p>
+                    <a href="https://instagram.com/parrafosegundo" target="_blank">Instagram</a>
+                    <a href="https://substack.com/@parrafosegundo" target="_blank">Substack</a>
+                </div>
             </div>
 
         </div>
@@ -90,8 +87,26 @@
         <p>&copy; 2026 Librería - Párrafo Segundo. Todos los derechos reservados.</p>
     </footer>
 
-    <script src="../js/toasts.js"></script>
-    <script src="libros.js"></script>
-    <script src="../js/carrito.js?v=1"></script>
+    <!-- Rutas corregidas para que el menú del carrito y los Toasts funcionen -->
+    <script src="../js/toasts.js?v=40"></script>
+    <script src="../js/libros.js?v=40"></script>
+    
+    <!-- Este script frena la recarga de la página y lanza la notificación -->
+    <script>
+        const formulario = document.getElementById('formulario-contacto');
+
+        if (formulario) {
+            formulario.addEventListener('submit', function(evento) {
+                // 1. Evita que la página parpadee o se recargue
+                evento.preventDefault(); 
+
+                // 2. Disparamos tu Toast elegante usando la función que ya creaste en toasts.js
+                mostrarToast("¡Mensaje enviado con éxito! Te contactaremos pronto.");
+
+                // 3. Limpiamos los campos del formulario para que quede en blanco
+                formulario.reset();
+            });
+        }
+    </script>
 </body>
 </html>
