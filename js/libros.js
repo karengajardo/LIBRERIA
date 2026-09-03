@@ -1,7 +1,7 @@
 // ==========================================
-// 1. BASE DE DATOS DE LIBROS
+// 1. BASE DE DATOS DE LIBROS (Sincronizada con localStorage)
 // ==========================================
-const catalogoLibros = [
+const librosIniciales = [
     { 
         titulo: "Cien años de soledad", 
         autor: "Gabriel García Márquez", 
@@ -9,7 +9,8 @@ const catalogoLibros = [
         imagen: "https://images.cdn1.buscalibre.com/fit-in/660x660/a2/8c/a28c74c0fdb8c85fe576fac52491e119.jpg", 
         categoria: "latinoamericanos",
         descripcion: "Señalada como 'categral gótica del lenguaje', este clásico del siglo XX es el enorme y espléndido tapiz de la saga de la familia Buendía, en la mítica aldea de Macondo. Uno de los cinco libros más importantes de los últimos 125 años, según el New York Times.",
-        stock: 3 },
+        stock: 3 
+    },
     { 
         titulo: "1984", 
         autor: "George Orwell", 
@@ -120,7 +121,8 @@ const catalogoLibros = [
     },
     { 
         titulo: "Ya Nadie Escribe Cartas", 
-        autor: "Jang Eun-jin", precio: "$19.900", 
+        autor: "Jang Eun-jin", 
+        precio: "$19.900", 
         imagen: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4fM9DvDE8Dem40owtU6rcX8XXo9NN4Hy1LISkJvkoVw&s", 
         categoria: "asiaticos",
         descripcion:"Es una novela contemplativa de la autora surcoreana Jang Eun-jin que explora la soledad, el viaje y la necesidad de la conexión humana a través de la correspondencia no enviada.",
@@ -204,6 +206,9 @@ const catalogoLibros = [
     }
 ];
 
+// Cargamos los libros desde localStorage si existen, de lo contrario usamos la lista inicial
+let catalogoLibros = JSON.parse(localStorage.getItem('misLibros')) || librosIniciales;
+
 // ==========================================
 // 2. CONFIGURACIÓN DE PÁGINAS
 // ==========================================
@@ -221,7 +226,7 @@ function mostrarLibros(libros, mostrarEtiquetaNuevo = false) {
     contenedorLibros.innerHTML = '';
 
     libros.forEach(libro => {
-        const etiquetaNuevo = mostrarEtiquetaNuevo ? `<span class="badge-nuevo">Nuevo</span>` : '';
+        const etiquetaNuevo = (mostrarEtiquetaNuevo || libro.novedad) ? `<span class="badge-nuevo">Nuevo</span>` : '';
         const tarjetaHTML = `
             <div class="book-card" data-category="${libro.categoria}">
                 ${etiquetaNuevo}
@@ -367,3 +372,8 @@ function actualizarContadorCarrito() {
     });
 }
 actualizarContadorCarrito(); // Ejecutar al inicio en todas las páginas
+
+function guardarLibrosEnStorage() {
+    localStorage.setItem('misLibros', JSON.stringify(catalogoLibros));
+}
+

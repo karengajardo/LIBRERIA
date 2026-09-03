@@ -3,25 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acceso Administrador</title>
+    <title>Panel de Administración - Párrafo Segundo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/estilos.css">
 </head>
 <body>
-    <div class="container" style="max-width: 400px; margin-top: 80px;">
-        <h2 class="section-title">Panel Admin</h2>
-        <form id="login-form">
-            <div style="margin-bottom: 15px;">
-                <label for="usuario">Usuario</label><br>
-                <input type="text" id="usuario" required style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;">
-            </div>
-            <div style="margin-bottom: 20px;">
-                <label for="password">Contraseña</label><br>
-                <input type="password" id="password" required style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;">
-            </div>
-            <button type="submit" style="width: 100%; padding: 10px; background-color: var(--primary-color); color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">Ingresar</button>
-        </form>
+
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo">📚 Párrafo Segundo</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="catalogo.html">Catálogo</a></li>
+                <li><a href="novedades.html">Novedades</a></li>
+                <li><a href="contacto.html">Contacto</a></li>
+                <li><a href="admin.html" style="color: var(--accent-color); font-weight: 600;">Admin ⚙️</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <div class="page-header morado">
+        <h1>Panel de Administración</h1>
+        <p>Agrega o elimina elementos del catálogo general</p>
     </div>
 
+    <main class="container" style="max-width: 800px;">
+        
+        <!-- Formulario para agregar libro -->
+        <section style="background: #f9f9f9; padding: 30px; border-radius: 8px; margin-bottom: 40px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+            <h2 style="margin-bottom: 20px; font-size: 1.5rem; color: var(--primary-color);">Agregar Nuevo Libro</h2>
+            <form id="form-admin-libro">
+                <div style="margin-bottom: 15px;">
+                    <label style="font-weight: 600;">Título:</label><br>
+                    <input type="text" id="admin-titulo" required style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;">
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label style="font-weight: 600;">Autor:</label><br>
+                    <input type="text" id="admin-autor" required style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;">
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label style="font-weight: 600;">Precio:</label><br>
+                    <input type="text" id="admin-precio" placeholder="$15.000" required style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;">
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label style="font-weight: 600;">URL de la Imagen (Portada):</label><br>
+                    <input type="url" id="admin-imagen" placeholder="https://..." required style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;">
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label style="font-weight: 600;">Categoría:</label><br>
+                    <select id="admin-categoria" style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;">
+                        <option value="clasicos">Clásicos</option>
+                        <option value="latinoamericanos">Latinoamericanos</option>
+                        <option value="contemporaneos">Contemporáneos</option>
+                        <option value="asiaticos">Asiáticos</option>
+                    </select>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <label><input type="checkbox" id="admin-nuevo"> Marcar como novedad/nuevo</label>
+                </div>
+                <button type="submit" class="btn" style="width: 100%; padding: 12px; cursor: pointer;">Guardar Libro en el Catálogo</button>
+            </form>
+        </section>
+
+        <!-- Lista de administración para borrar -->
+        <section>
+            <h2 style="margin-bottom: 20px; font-size: 1.5rem; color: var(--primary-color);">Libros Actuales en el Sistema</h2>
+            <div id="admin-lista-libros">
+                <!-- Se llena mediante JS -->
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Librería - Párrafo Segundo. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="../js/toasts.js"></script>
+    <script src="../js/libros.js"></script>
     <script src="../js/admin.js"></script>
 </body>
 </html>
