@@ -36,14 +36,18 @@ if (contenedorListaCarrito) {
             const itemHTML = `
                 <div class="item-carrito" style="display: flex; gap: 20px; padding: 20px 0; border-bottom: 1px solid #eee;">
                     
-                    <!-- 1. Columna Izquierda: La Imagen -->
-                    <div style="flex-shrink: 0;">
+                    <!-- 1. Columna Izquierda: La Imagen (¡Ahora es clickeable!) -->
+                    <div style="flex-shrink: 0; cursor: pointer;" onclick="window.location.href='libro.html?titulo=${encodeURIComponent(libro.titulo)}'">
                         <img src="${imagenLibro}" alt="Portada de ${libro.titulo}" style="width: 75px; height: auto; border-radius: 4px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
                     </div>
 
                     <!-- 2. Columna Derecha: Toda la información y botones -->
                     <div style="flex-grow: 1; display: flex; flex-direction: column; justify-content: center;">
-                        <h3 style="margin: 0 0 8px 0; font-family: 'Merriweather', serif; font-size: 1.3rem;">${libro.titulo}</h3>
+                        
+                        <!-- Título también clickeable -->
+                        <h3 style="margin: 0 0 8px 0; font-family: 'Merriweather', serif; font-size: 1.3rem; cursor: pointer;" onclick="window.location.href='libro.html?titulo=${encodeURIComponent(libro.titulo)}'">
+                            ${libro.titulo}
+                        </h3>
                         
                         <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 12px; flex-wrap: wrap;">
                             <p style="margin: 0; color: #555;">Precio un.: ${libro.precio} | Subtotal: <strong style="color: #2c3e50;">${enteroAPrecio(subtotal)}</strong></p>
