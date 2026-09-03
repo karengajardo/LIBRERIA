@@ -28,20 +28,36 @@ if (contenedorListaCarrito) {
             
             totalPagar += subtotal;
 
+            // EL TRUCO: Buscamos la imagen del libro en el catálogo principal
+            const libroEnBD = catalogoLibros.find(item => item.titulo === libro.titulo);
+            // Si lo encuentra, usa su imagen. Si no, usa una imagen en blanco por defecto.
+            const imagenLibro = libroEnBD ? libroEnBD.imagen : '';
+
             const itemHTML = `
-                <div class="item-carrito">
-                    <div>
-                        <h3 style="margin: 0; font-family: 'Merriweather', serif;">${libro.titulo}</h3>
-                        <p style="margin: 5px 0 10px 0; color: #555;">Precio un.: ${libro.precio} | Subtotal: <strong style="color: #2c3e50;">${enteroAPrecio(subtotal)}</strong></p>
+                <div class="item-carrito" style="display: flex; gap: 20px; padding: 20px 0; border-bottom: 1px solid #eee;">
+                    
+                    <!-- 1. Columna Izquierda: La Imagen -->
+                    <div style="flex-shrink: 0;">
+                        <img src="${imagenLibro}" alt="Portada de ${libro.titulo}" style="width: 75px; height: auto; border-radius: 4px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+                    </div>
+
+                    <!-- 2. Columna Derecha: Toda la información y botones -->
+                    <div style="flex-grow: 1; display: flex; flex-direction: column; justify-content: center;">
+                        <h3 style="margin: 0 0 8px 0; font-family: 'Merriweather', serif; font-size: 1.3rem;">${libro.titulo}</h3>
                         
-                        <!-- Botones de cantidad -->
+                        <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 12px; flex-wrap: wrap;">
+                            <p style="margin: 0; color: #555;">Precio un.: ${libro.precio} | Subtotal: <strong style="color: #2c3e50;">${enteroAPrecio(subtotal)}</strong></p>
+                            <button class="btn-eliminar" onclick="eliminarDelCarrito(${index})" style="padding: 4px 12px; font-size: 0.85rem; border-radius: 20px; background-color: #e74c3c; color: white; border: none; cursor: pointer;">Eliminar</button>
+                        </div>
+                        
+                        <!-- Botones de cantidad (+ / -) -->
                         <div style="display: flex; align-items: center; gap: 10px;">
                             <button class="btn-cantidad" onclick="cambiarCantidad(${index}, -1)">-</button>
                             <span style="font-weight: bold; width: 25px; text-align: center; font-size: 1.1rem;">${cantidad}</span>
                             <button class="btn-cantidad" onclick="cambiarCantidad(${index}, 1)">+</button>
                         </div>
                     </div>
-                    <button class="btn-eliminar" onclick="eliminarDelCarrito(${index})">Eliminar</button>
+                    
                 </div>
             `;
             contenedorListaCarrito.innerHTML += itemHTML;
@@ -60,31 +76,53 @@ if (contenedorListaCarrito) {
 }
 
 // ----------------------------------------------------
-// NUEVA FUNCIÓN: Sumar o restar unidades
+// FUNCIÓN: Sumar o restar unidades (Con validación)
 // ----------------------------------------------------
 function cambiarCantidad(index, cambio) {
+    // Si el usuario intenta sumar (cambio === 1)
+    if (cambio === 1) {
+        const tituloLibro = carrito[index].titulo;
+        
+        // Buscamos el stock en la base de datos principal (catalogoLibros)
+        const libroEnBD = catalogoLibros.find(item => item.titulo === tituloLibro);
+        const stockDisponible = libroEnBD && libroEnBD.stock !== undefined ? libroEnBD.stock : 10;
+
+        // Si ya alcanzó el límite, mostramos el aviso y detenemos la suma
+        if (carrito[index].cantidad >= stockDisponible) {
+            mostrarToast(`No puedes agregar más. El stock máximo de "${tituloLibro}" es de ${stockDisponible} unidades.`);
+            return; 
+        }
+    }
+
+    // Si todo está bien, o si está restando, hacemos la matemática
     carrito[index].cantidad += cambio;
 
-    // Si la cantidad llega a cero, borramos el libro directamente
+    // Si la cantidad llega a cero, borramos el libro
     if (carrito[index].cantidad <= 0) {
         eliminarDelCarrito(index);
         return; 
     }
 
-    // 1. Guardamos el cambio en la memoria
     localStorage.setItem('carritoLibreria', JSON.stringify(carrito));
-    // 2. Actualizamos el número rojo del menú superior (¡gracias a libros.js!)
     actualizarContadorCarrito(); 
-    // 3. Volvemos a dibujar la lista para que el precio total cambie al instante
     dibujarCarrito(); 
 }
 
 // ----------------------------------------------------
-// MEJORA: Eliminar sin parpadear la pantalla
+// MEJORA: Eliminar con notificación Toast
 // ----------------------------------------------------
 function eliminarDelCarrito(index) {
+    // 1. Rescatamos el título del libro antes de que desaparezca
+    const tituloEliminado = carrito[index].titulo;
+
+    // 2. Lo borramos de la memoria del carrito
     carrito.splice(index, 1);
     localStorage.setItem('carritoLibreria', JSON.stringify(carrito));
+    
+    // 3. Actualizamos el número rojo y la lista en pantalla
     actualizarContadorCarrito(); 
-    dibujarCarrito(); // Redibuja al instante en lugar de usar window.location.reload()
+    dibujarCarrito(); 
+
+    // 4. ¡Disparamos tu Toast elegante!
+    mostrarToast(`¡"<strong>${tituloEliminado}</strong>" eliminado satisfactoriamente!`);
 }
