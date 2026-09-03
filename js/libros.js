@@ -9,7 +9,8 @@ const catalogoLibros = [
         imagen: "https://images.cdn1.buscalibre.com/fit-in/660x660/a2/8c/a28c74c0fdb8c85fe576fac52491e119.jpg", 
         categoria: "latinoamericanos",
         descripcion: "Señalada como 'categral gótica del lenguaje', este clásico del siglo XX es el enorme y espléndido tapiz de la saga de la familia Buendía, en la mítica aldea de Macondo. Uno de los cinco libros más importantes de los últimos 125 años, según el New York Times.",
-        stock: 3 },
+        stock: 3 
+    },
     { 
         titulo: "1984", 
         autor: "George Orwell", 
@@ -120,7 +121,8 @@ const catalogoLibros = [
     },
     { 
         titulo: "Ya Nadie Escribe Cartas", 
-        autor: "Jang Eun-jin", precio: "$19.900", 
+        autor: "Jang Eun-jin", 
+        precio: "$19.900", 
         imagen: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4fM9DvDE8Dem40owtU6rcX8XXo9NN4Hy1LISkJvkoVw&s", 
         categoria: "asiaticos",
         descripcion:"Es una novela contemplativa de la autora surcoreana Jang Eun-jin que explora la soledad, el viaje y la necesidad de la conexión humana a través de la correspondencia no enviada.",
@@ -205,12 +207,15 @@ const catalogoLibros = [
 ];
 
 // ==========================================
-// 2. CONFIGURACIÓN DE PÁGINAS
+// 2. CONFIGURACIÓN DE PÁGINAS Y MEMORIA
 // ==========================================
 const contenedorLibros = document.querySelector('.book-grid');
 const esPaginaCatalogo = document.querySelector('.filter-buttons') !== null;
 const encabezado = document.querySelector('.page-header h1');
 const esPaginaNovedades = encabezado !== null && encabezado.textContent.includes('Llegadas');
+
+// ¡MOVIMOS EL CARRITO AQUÍ ARRIBA!
+let carrito = JSON.parse(localStorage.getItem('carritoLibreria')) || [];
 
 // ==========================================
 // 3. FUNCIÓN PARA PINTAR LIBROS
@@ -222,18 +227,31 @@ function mostrarLibros(libros, mostrarEtiquetaNuevo = false) {
 
     libros.forEach(libro => {
         const etiquetaNuevo = mostrarEtiquetaNuevo ? `<span class="badge-nuevo">Nuevo</span>` : '';
+        
+        // --- NUEVA LÓGICA DE INVENTARIO ---
+        const stockTotal = libro.stock !== undefined ? libro.stock : 10;
+        const libroEnCarrito = carrito.find(item => item.titulo === libro.titulo);
+        const cantidadEnCarrito = libroEnCarrito ? libroEnCarrito.cantidad : 0;
+        const stockRestante = stockTotal - cantidadEnCarrito;
+
+        // 3. Decidimos qué botón dibujar (¡Ahora con data-titulo!)
+        let botonHTML = '';
+        if (stockRestante <= 0) {
+            botonHTML = `<button class="btn-agregar" disabled style="background-color: #bdc3c7; cursor: not-allowed;" data-titulo="${libro.titulo}">Agotado</button>`;
+        } else {
+            botonHTML = `<button class="btn-agregar" onclick="agregarAlCarrito('${libro.titulo}', '${libro.precio}')" data-titulo="${libro.titulo}">Agregar al carrito</button>`;
+        }
+
         const tarjetaHTML = `
             <div class="book-card" data-category="${libro.categoria}">
                 ${etiquetaNuevo}
                 
-                <!-- ¡Clickeable hacia libro.html! -->
                 <div class="book-cover" 
                      style="background-image: url('${libro.imagen}'); cursor: pointer;" 
                      onclick="window.location.href='libro.html?titulo=${encodeURIComponent(libro.titulo)}'">
                 </div>
                 
                 <div class="book-info">
-                    <!-- Título clickeable -->
                     <h3 class="book-title" 
                         style="cursor: pointer;" 
                         onclick="window.location.href='libro.html?titulo=${encodeURIComponent(libro.titulo)}'">
@@ -242,7 +260,8 @@ function mostrarLibros(libros, mostrarEtiquetaNuevo = false) {
                     
                     <p class="book-author">${libro.autor}</p>
                     <div class="book-price">${libro.precio}</div>
-                    <button class="btn-agregar" onclick="agregarAlCarrito('${libro.titulo}', '${libro.precio}')">Agregar al carrito</button>
+                    
+                    ${botonHTML}
                 </div>
             </div>
         `;
@@ -291,6 +310,12 @@ if (esPaginaCatalogo) {
 } else if (esPaginaNovedades) {
     const librosNuevos = catalogoLibros.filter(libro => libro.novedad === true);
     mostrarLibros(librosNuevos, true);
+
+} else if (contenedorLibros) {
+    // ¡AQUÍ ESTÁ LA NUEVA LÓGICA PARA LA PÁGINA DE INICIO!
+    // Si no es catálogo ni novedades, asume que es index.html y muestra solo 4 libros destacados
+    const librosDestacados = catalogoLibros.slice(0, 4); 
+    mostrarLibros(librosDestacados, false);
 }
 
 // ==========================================
@@ -324,26 +349,18 @@ if (buscadorGlobal) {
 // ==========================================
 // 6. LÓGICA DEL CARRITO (Con validación de Stock)
 // ==========================================
-let carrito = JSON.parse(localStorage.getItem('carritoLibreria')) || [];
-
 function agregarAlCarrito(titulo, precio) {
-    // 1. Buscamos el libro en el catálogo maestro para ver su stock real
     const libroEnBD = catalogoLibros.find(libro => libro.titulo === titulo);
-    
-    // Si no le has puesto stock al libro en la base de datos, asumimos un máximo de 10
     const stockDisponible = libroEnBD && libroEnBD.stock !== undefined ? libroEnBD.stock : 10; 
 
-    // 2. Revisamos cuántos de este libro ya están guardados en tu carrito
     const libroExistente = carrito.find(libro => libro.titulo === titulo);
     const cantidadActual = libroExistente ? libroExistente.cantidad : 0;
 
-    // 3. LA REGLA DE INVENTARIO: Si ya tienes el tope, detenemos la acción
     if (cantidadActual >= stockDisponible) {
         mostrarToast(`¡Ups! Solo tenemos <strong>${stockDisponible}</strong> unidades de "${titulo}" disponibles.`);
-        return; // El 'return' hace que la función termine aquí y no guarde nada
+        return; 
     }
 
-    // 4. Si pasó la prueba de stock, seguimos con tu lógica original
     if (libroExistente) {
         libroExistente.cantidad += 1;
     } else {
@@ -353,17 +370,42 @@ function agregarAlCarrito(titulo, precio) {
     localStorage.setItem('carritoLibreria', JSON.stringify(carrito));
     actualizarContadorCarrito();
     
+    // ¡LA MAGIA INSTANTÁNEA! Actualiza los botones en la vista actual sin recargar la página
+    actualizarBotonesEnPantalla();
+    
     mostrarToast(`¡"<strong>${titulo}</strong>" agregado al carrito!`);
+}
+
+// NUEVA FUNCIÓN: Busca todos los botones en la pantalla y los bloquea si es necesario
+function actualizarBotonesEnPantalla() {
+    // Buscamos todos los botones que tengan nuestra etiqueta oculta 'data-titulo'
+    const botones = document.querySelectorAll('.btn-agregar[data-titulo]');
+    
+    botones.forEach(boton => {
+        const tituloBoton = boton.getAttribute('data-titulo');
+        const libroEnBD = catalogoLibros.find(l => l.titulo === tituloBoton);
+        const stockTotal = libroEnBD && libroEnBD.stock !== undefined ? libroEnBD.stock : 10;
+        
+        const libroEnCarrito = carrito.find(item => item.titulo === tituloBoton);
+        const cantidadEnCarrito = libroEnCarrito ? libroEnCarrito.cantidad : 0;
+        
+        // Si la matemática dice que ya no queda stock, transformamos este botón
+        if (stockTotal - cantidadEnCarrito <= 0) {
+            boton.disabled = true;
+            boton.style.backgroundColor = "#bdc3c7";
+            boton.style.cursor = "not-allowed";
+            boton.textContent = "Agotado";
+            boton.onclick = null; // Le quitamos el evento del clic por seguridad
+        }
+    });
 }
 
 function actualizarContadorCarrito() {
     const contadores = document.querySelectorAll('#contador-carrito');
-    
-    // Sumamos el total de unidades (ej: 2 de uno + 1 de otro = 3)
     const totalUnidades = carrito.reduce((suma, libro) => suma + (libro.cantidad || 1), 0);
     
     contadores.forEach(contador => {
         contador.textContent = totalUnidades;
     });
 }
-actualizarContadorCarrito(); // Ejecutar al inicio en todas las páginas
+actualizarContadorCarrito();

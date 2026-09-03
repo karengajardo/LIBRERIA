@@ -130,3 +130,27 @@ function eliminarDelCarrito(index) {
     // 4. ¡Disparamos tu Toast elegante!
     mostrarToast(`¡"<strong>${tituloEliminado}</strong>" eliminado satisfactoriamente!`);
 }
+
+// ==========================================
+// FUNCIÓN: Vaciar todo el carrito
+// ==========================================
+function vaciarCarrito() {
+    // 1. Verificamos que el carrito no esté ya vacío para no hacer cosas de más
+    if (carrito.length === 0) {
+        mostrarToast("Tu carrito ya está vacío.");
+        return;
+    }
+
+    // 2. Borramos todos los elementos del arreglo
+    carrito = [];
+
+    // 3. Sobrescribimos la memoria del navegador con el carrito vacío
+    localStorage.setItem('carritoLibreria', JSON.stringify(carrito));
+
+    // 4. Actualizamos el número rojo de arriba y redibujamos la pantalla en blanco
+    actualizarContadorCarrito();
+    dibujarCarrito();
+
+    // 5. Lanzamos tu notificación elegante
+    mostrarToast("El carrito ha sido vaciado por completo.");
+}
