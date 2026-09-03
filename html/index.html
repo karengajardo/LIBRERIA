@@ -4,28 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio - Párrafo Segundo</title>
-    <!-- Fuentes de Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    
-    <!-- AQUÍ VINCULAS TU ARCHIVO CSS EXTERNO -->
-    <link rel="stylesheet" href="/css/estilos.css">
+    <link rel="stylesheet" href="../css/estilos.css?v=16">
 </head>
 <body>
 
-    <!-- Navegación y links a-->
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo">📚 Párrafo Segundo</a>
             <ul class="nav-links">
-                <!-- Vincula a la página de inicio -->
                 <li><a href="index.html">Inicio</a></li>
-                
-                <!-- Vincula a la página de catálogo -->
                 <li><a href="catalogo.html">Catálogo</a></li>
-                
-                <!-- Los demás pueden quedar con # hasta que crees sus archivos -->
                 <li><a href="novedades.html">Novedades</a></li>
-                <li><a href="contacto">Contacto</a></li>
+                <li><a href="contacto.html">Contacto</a></li>
                 <li><a href="carrito.html">Carrito 🛒 <span id="contador-carrito" class="badge-carrito">0</span></a></li>
             </ul>
             <div class="search-nav">
@@ -34,65 +25,71 @@
         </div>
     </header>
 
-    <!-- Sección Hero -->
     <section class="hero">
         <h1>Descubre tu próxima gran lectura</h1>
         <p>Explora miles de historias, ensayos y mundos por descubrir.</p>
         <a href="catalogo.html" class="btn">Ver Catálogo</a>
     </section>
 
-    <!-- Sección de Libros Destacados -->
     <main class="container" id="catalogo">
         <h2 class="section-title">Libros Destacados</h2>
         
         <div class="book-grid">
             <!-- Libro 1 -->
             <div class="book-card">
-                <div class="book-cover" style="background-image: url('https://images.cdn1.buscalibre.com/fit-in/660x660/a2/8c/a28c74c0fdb8c85fe576fac52491e119.jpg');"></div>
+                <!-- Aquí está la magia: cursor pointer y onclick para ir al detalle -->
+                <div class="book-cover" style="background-image: url('https://images.cdn1.buscalibre.com/fit-in/660x660/a2/8c/a28c74c0fdb8c85fe576fac52491e119.jpg'); cursor: pointer;" onclick="window.location.href='libro.html?titulo=Cien años de soledad'"></div>
                 <div class="book-info">
-                    <h3 class="book-title">Cien años de soledad</h3>
+                    <!-- Y aquí también en el título -->
+                    <h3 class="book-title" style="cursor: pointer;" onclick="window.location.href='libro.html?titulo=Cien años de soledad'">Cien años de soledad</h3>
                     <p class="book-author">Gabriel García Márquez</p>
                     <div class="book-price">$18.990</div>
+                    <button class="btn-agregar" onclick="agregarAlCarrito('Cien años de soledad', '$18.990')">Agregar al carrito</button>
                 </div>
             </div>
 
             <!-- Libro 2 -->
             <div class="book-card">
-                <div class="book-cover" style="background-image: url('https://images.cdn1.buscalibre.com/fit-in/360x360/c9/ee/c9eef0bafc045010bfc431812ea5bbf8.jpg');"></div>
+                <div class="book-cover" style="background-image: url('https://images.cdn1.buscalibre.com/fit-in/360x360/c9/ee/c9eef0bafc045010bfc431812ea5bbf8.jpg'); cursor: pointer;" onclick="window.location.href='libro.html?titulo=1984'"></div>
                 <div class="book-info">
-                    <h3 class="book-title">1984</h3>
+                    <h3 class="book-title" style="cursor: pointer;" onclick="window.location.href='libro.html?titulo=1984'">1984</h3>
                     <p class="book-author">George Orwell</p>
                     <div class="book-price">$14.500</div>
+                    <button class="btn-agregar" onclick="agregarAlCarrito('1984', '$14.500')">Agregar al carrito</button>
                 </div>
             </div>
 
             <!-- Libro 3 -->
             <div class="book-card">
-                <div class="book-cover" style="background-image: url('https://cdn.prod.website-files.com/6034d7d1f3e0f52c50b2adee/681b63dd7d9dbb4c4ce5ae76_WJlUnXLgNrZqh3HN_u7WMEnTVs1tV0qKwtUkvXJ2JTk.jpeg');"></div>
+                <div class="book-cover" style="background-image: url('https://cdn.prod.website-files.com/6034d7d1f3e0f52c50b2adee/681b63dd7d9dbb4c4ce5ae76_WJlUnXLgNrZqh3HN_u7WMEnTVs1tV0qKwtUkvXJ2JTk.jpeg'); cursor: pointer;" onclick="window.location.href='libro.html?titulo=El Principito'"></div>
                 <div class="book-info">
-                    <h3 class="book-title">El Principito</h3>
+                    <h3 class="book-title" style="cursor: pointer;" onclick="window.location.href='libro.html?titulo=El Principito'">El Principito</h3>
                     <p class="book-author">Antoine de Saint-Exupéry</p>
                     <div class="book-price">$9.990</div>
+                    <button class="btn-agregar" onclick="agregarAlCarrito('El Principito', '$9.990')">Agregar al carrito</button>
                 </div>
             </div>
 
             <!-- Libro 4 -->
             <div class="book-card">
-                <div class="book-cover" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFEC5rSQYIhmOJvnMXdQDkfs2UsRO0xbNYmuDLkLju-GEU6TaP_u7hVp6E&s=100');"></div>
+                <div class="book-cover" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFEC5rSQYIhmOJvnMXdQDkfs2UsRO0xbNYmuDLkLju-GEU6TaP_u7hVp6E&s=100'); cursor: pointer;" onclick="window.location.href='libro.html?titulo=Don Quijote de la Mancha'"></div>
                 <div class="book-info">
-                    <h3 class="book-title">Don Quijote de la Mancha</h3>
+                    <h3 class="book-title" style="cursor: pointer;" onclick="window.location.href='libro.html?titulo=Don Quijote de la Mancha'">Don Quijote de la Mancha</h3>
                     <p class="book-author">Miguel de Cervantes</p>
                     <div class="book-price">$22.000</div>
+                    <button class="btn-agregar" onclick="agregarAlCarrito('Don Quijote de la Mancha', '$22.000')">Agregar al carrito</button>
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- Pie de página -->
     <footer>
         <p>&copy; 2026 Librería - Párrafo Segundo. Todos los derechos reservados.</p>
     </footer>
 
-    <script src="libros.js"></script>
+    <!-- Solo dejamos estos dos scripts, sin el carrito.js -->
+    <script src="../js/toasts.js?v=16"></script>
+    <script src="../js/libros.js?v=16"></script>
+
 </body>
 </html>

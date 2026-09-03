@@ -161,9 +161,15 @@ header {
 }
 
 .book-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    display: grid !important;
+    /* Cambiamos '1fr' por '280px'. Así, si sobra espacio, el libro no pasará de ese ancho */
+    grid-template-columns: repeat(auto-fit, minmax(220px, 280px)) !important; 
+    justify-content: center !important; /* Magia: centra los libros cuando son poquitos */
     gap: 30px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    align-items: stretch;
 }
 
 .book-card {
@@ -429,4 +435,124 @@ footer p {
     font-size: 1.2rem;
     color: #666;
     padding: 40px;
+}
+
+/* ==========================================
+   ESTILOS DE NOTIFICACIONES (TOASTS)
+   ========================================== */
+#toast-container {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 9999; /* Para que siempre esté por encima de todo */
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.toast {
+    background-color: #2c3e50; /* Un azul oscuro muy editorial */
+    color: #ffffff;
+    padding: 15px 25px;
+    border-radius: 8px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.95rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    /* Animación de entrada */
+    animation: deslizarToast 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Clase para cuando el toast se va de la pantalla */
+.toast.oculto {
+    opacity: 0;
+    transform: translateX(100%);
+}
+
+/* La magia del movimiento */
+@keyframes deslizarToast {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* ==========================================
+   BOTONES DE SUMAR/RESTAR EN CARRITO
+   ========================================== */
+.btn-cantidad {
+    background-color: #f1f1f1;
+    border: 1px solid #dcdcdc;
+    color: #2c3e50;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1rem;
+    font-weight: bold;
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-cantidad:hover {
+    background-color: #e2e8f0;
+    border-color: #cbd5e1;
+}
+
+/* ==========================================
+   PÁGINA DE DETALLE DEL LIBRO
+   ========================================== */
+.detalle-layout {
+    display: flex;
+    gap: 60px;
+    margin: 60px auto;
+    align-items: center;
+}
+
+.detalle-portada {
+    flex: 1;
+    max-width: 400px;
+}
+
+.detalle-portada img {
+    width: 100%;
+    border-radius: 4px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+}
+
+.detalle-info {
+    flex: 1.5;
+    display: flex;
+    flex-direction: column;
+}
+
+.detalle-titulo {
+    font-size: 2.8rem;
+    margin-bottom: 10px;
+    line-height: 1.2;
+}
+
+.detalle-autor {
+    font-size: 1.4rem;
+    color: #7f8c8d;
+    font-family: 'Poppins', sans-serif;
+    margin-bottom: 25px;
+    font-weight: 300;
+}
+
+.detalle-sinopsis {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #444;
+    margin-bottom: 30px;
 }
