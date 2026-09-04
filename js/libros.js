@@ -1,7 +1,7 @@
 // ==========================================
 // 1. BASE DE DATOS DE LIBROS
 // ==========================================
-const catalogoLibros = [
+const catalogoLibrosBase = [
     { 
         titulo: "Cien años de soledad", 
         autor: "Gabriel García Márquez", 
@@ -9,7 +9,7 @@ const catalogoLibros = [
         imagen: "https://images.cdn1.buscalibre.com/fit-in/660x660/a2/8c/a28c74c0fdb8c85fe576fac52491e119.jpg", 
         categoria: "latinoamericanos",
         descripcion: "Señalada como 'categral gótica del lenguaje', este clásico del siglo XX es el enorme y espléndido tapiz de la saga de la familia Buendía, en la mítica aldea de Macondo. Uno de los cinco libros más importantes de los últimos 125 años, según el New York Times.",
-        stock: 3 
+        stock: 10
     },
     { 
         titulo: "1984", 
@@ -18,7 +18,7 @@ const catalogoLibros = [
         imagen: "https://images.cdn1.buscalibre.com/fit-in/360x360/c9/ee/c9eef0bafc045010bfc431812ea5bbf8.jpg", 
         categoria: "clasicos" ,
         descripcion: "Novela distópica fundamental. La historia sigue a Winston Smith, un hombre que trabaja reescribiendo la historia en un mundo totalitario controlado por el Gran Hermano, donde la vigilancia es constante y el pensamiento libre es un crimen castigado. ",
-        stock: 3
+        stock: 4
     },
     { 
         titulo: "El Principito", 
@@ -27,7 +27,7 @@ const catalogoLibros = [
         imagen: "https://cdn.prod.website-files.com/6034d7d1f3e0f52c50b2adee/681b63dd7d9dbb4c4ce5ae76_WJlUnXLgNrZqh3HN_u7WMEnTVs1tV0qKwtUkvXJ2JTk.jpeg", 
         categoria: "clasicos",
         descripcion: "Novela corta y cuento poético escrito por el aviador y escritor francés Antoine de Saint-Exupéry. ",
-        stock: 3
+        stock: 5
     },
     { 
         titulo: "Don Quijote de la Mancha", 
@@ -45,7 +45,7 @@ const catalogoLibros = [
         imagen: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCZqcppciTLp2robBPBa7JMm5FMaDcbEzD28rEjelhTCqAQIHcdHFLUv7G&s=10", 
         categoria: "clasicos",
         descripcion: "Novela que nos presenta un futuro donde los libros están prohibidos y los bomberos se dedican a quemarlos. ",
-        stock: 3
+        stock: 7
     },
     { 
         titulo: "Orgullo y Prejuicio", 
@@ -54,7 +54,7 @@ const catalogoLibros = [
         imagen: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQr3RZC9kruGsbRu6lpS0-IP_6Rsic9hmCZ5A2GBM-Bqw&s", 
         categoria: "clasicos",
         descripcion:"Novela clásica de 1813 que mezcla una brillante historia de amor con una aguda crítica social a la Inglaterra del siglo XIX. ",
-        stock: 3
+        stock: 8
     },
     { 
         titulo: "El Jugador", 
@@ -63,7 +63,7 @@ const catalogoLibros = [
         imagen: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTDEvnbgt_atlMISzAJu7cwXXyrHeeK8MngzkAsCyM_Fg&s=10", 
         categoria: "clasicos" ,
         descripcion:"Es una intensa novela corta de carácter autobiográfico que retrata de manera magistral los abismos de la ludopatía y la obsesión amorosa.",
-        stock: 3
+        stock: 2
     },
     { 
         titulo: "Cometierra", 
@@ -72,16 +72,16 @@ const catalogoLibros = [
         imagen: "https://images.cdn2.buscalibre.com/fit-in/660x660/9e/5a/9e5a9a0556f662362cdc8145194efecc.jpg", 
         categoria: "latinoamericanos",
         descripcion:"Breve novela, de gran y profundo impacto que entrelaza el realismo mágico cn la descarnada realidad de la violencia de género en América Latina. ",
-        stock: 3
+        stock: 9
     },
     { 
         titulo: "Crimen y Castigo", 
         autor: "Fiodor M. Dostoyevski", 
         precio: "$39.900", 
-        imagen: "https://tajamar-editores.cl/cdn/shop/files/9788490653517.jpg?v=1720454141", 
+        imagen: "https://images.cdn1.buscalibre.com/fit-in/660x660/2b/34/2b342d36ef089ce9bdd7b81aa3329093.jpg", 
         categoria: "clasicos",
         descripcion:"Publicada en 1866, es una de las cumbres de la literatura psicológica que explota la culpa, la moralidad y la redención humana. ",
-        stock: 3
+        stock: 4
     },
     { 
         titulo: "El Jardinero y la Muerte", 
@@ -90,7 +90,7 @@ const catalogoLibros = [
         imagen: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPAR1yZUP5ZMgOZH24-GYWu2H_JodvTiOU_orwsQoRr85hEA6c1rr55pWj&s=10", 
         categoria: "contemporaneos",
         descripcion:"Escritor por el autor búlgaro y ganador del Premio Booker Internacional, Gueorgui Gospodínov, es un conmovedor relato de autoficción y ensayo lírico sobre los últimos meses de vida de su padre, consumido por una enfermedad terminal. El libro arranca con una frase lapidaria y bellísima que impregna toda la obra: 'Mi padre era jardinero. Ahora es jardín'. ",
-        stock: 3
+        stock: 1
     },
     { 
         titulo: "Las Gratitudes", 
@@ -99,7 +99,7 @@ const catalogoLibros = [
         imagen: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1jxN0sSVf03l4v1U4QsHnN23s_b31GBMKBb5eYQQlow&s=10", 
         categoria: "contemporaneos",
         descripcion: "Es una conmovedora novela corta sobre la vejez, la pérdida del lenguaje y la importancia de agradecer en vida. ",
-        stock: 3
+        stock: 5
     },
     { 
         titulo: "Pura Pasión", 
@@ -117,7 +117,7 @@ const catalogoLibros = [
         imagen: "https://images.cdn3.buscalibre.com/fit-in/660x660/74/df/74dfb357e1e3b66a88cf9833458fa244.jpg", 
         categoria: "clasicos",
         descripcion:"Es una novela corta del escritor austriaco Stefan Zweig, publciada en 1922, que narra la desgarradora confesión de un amor obsesivo y unilateral. ",
-        stock: 3
+        stock: 2
     },
     { 
         titulo: "Ya Nadie Escribe Cartas", 
@@ -126,7 +126,7 @@ const catalogoLibros = [
         imagen: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4fM9DvDE8Dem40owtU6rcX8XXo9NN4Hy1LISkJvkoVw&s", 
         categoria: "asiaticos",
         descripcion:"Es una novela contemplativa de la autora surcoreana Jang Eun-jin que explora la soledad, el viaje y la necesidad de la conexión humana a través de la correspondencia no enviada.",
-        stock: 3
+        stock: 4
     },
     { 
         titulo: "Nada Dentro", 
@@ -135,7 +135,7 @@ const catalogoLibros = [
         imagen: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQoJqIhdMwS-rviypO6txL1MdejtWOsksc7Xa1BxTdLw&s=10", 
         categoria: "asiaticos",
         descripcion:"Breve y sutil novela que explora la vida de dos mujeres que deciden vivir al margen de las normas y expectativas de la sociedad japonesa contemporánea. ",
-        stock: 3
+        stock: 4
     },
     { 
         titulo: "Blanco", 
@@ -163,7 +163,7 @@ const catalogoLibros = [
         imagen: "https://images.cdn1.buscalibre.com/fit-in/660x660/d5/7f/d57fa2f6bf1ea3a0216f7b58b40711ca.jpg", 
         categoria: "latinoamericanos",
         descripcion:"Novela corta, intensa y trágica ambientada en la Cartagena de Indias colonial del siglo XVIII. ",
-        stock: 3,
+        stock: 7,
         novedad: true 
     },
     { 
@@ -173,7 +173,7 @@ const catalogoLibros = [
         imagen: "https://cms.anagrama-ed.es/uploads/media/portadas/0001/27/0626dbb1eef4e0172728f155d02b860c2fcf396a.jpeg", 
         categoria: "latinoamericanos",
         descripcion:"Es una aclamada antología de 12 cuentos de terror de la escritoira argentina Mariana Enriquez, publicada originalmente en 2009. ",
-        stock: 3
+        stock: 6
     },
     { 
         titulo: "Kentukis", 
@@ -192,7 +192,7 @@ const catalogoLibros = [
         imagen: "https://www.libreriadelgam.cl/imagenes/9789566/978956624855.JPG", 
         categoria: "asiaticos",
         descripcion:"Narra la brutal represión militar de la revuelta popular en Gwangju, Corea del Sur, en mayo de 1980. A través de múltiples voces, la novela explone el impacto del trauma, la culpa de los supervivientes y la memoria de las víctimas. ",
-        stock: 3
+        stock: 6
     },
     { 
         titulo: "La Única Historia", 
@@ -201,10 +201,13 @@ const catalogoLibros = [
         imagen: "https://images.cdn1.buscalibre.com/fit-in/360x360/bf/82/bf8235d8cb6116a8ed86faa69c37dbd7.jpg", 
         categoria: "contemporaneos",
         descripcion:"Publicada por Julian Barnes en 2018, es una novela conmovedora y lúcida sobre el primer amor, la memoria y el dolor inevitable que acompaña las grandes pasiones. ",
-        stock: 3,
+        stock: 7,
         novedad: true 
     }
 ];
+
+// LA MAGIA: Creamos el catálogo real usando sessionStorage
+let catalogoLibros = JSON.parse(sessionStorage.getItem('inventarioLibreria')) || catalogoLibrosBase;
 
 // ==========================================
 // 2. CONFIGURACIÓN DE PÁGINAS Y MEMORIA
@@ -402,10 +405,20 @@ function actualizarBotonesEnPantalla() {
 
 function actualizarContadorCarrito() {
     const contadores = document.querySelectorAll('#contador-carrito');
+    
+    // Calculamos el total de unidades
     const totalUnidades = carrito.reduce((suma, libro) => suma + (libro.cantidad || 1), 0);
     
     contadores.forEach(contador => {
         contador.textContent = totalUnidades;
+        
+        // LA MAGIA: Ocultar si es 0, mostrar si es mayor a 0
+        if (totalUnidades === 0) {
+            contador.style.display = 'none';
+        } else {
+            contador.style.display = 'inline-block'; 
+        }
     });
 }
+// Ejecutar al inicio en todas las páginas
 actualizarContadorCarrito();

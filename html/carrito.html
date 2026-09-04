@@ -5,26 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mi Carrito - Párrafo Segundo</title>
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../css/estilos.css?v=70">
+    <link rel="stylesheet" href="../css/estilos.css">
 </head>
 <body>
 
     <!-- Navegación -->
     <header>
-        <div class="nav-container">
-            <a href="index.html" class="logo">📚 Párrafo Segundo</a>
-            <ul class="nav-links">
-                <li><a href="index.html">Inicio</a></li>
-                <li><a href="catalogo.html">Catálogo</a></li>
-                <li><a href="novedades.html">Novedades</a></li>
-                <li><a href="contacto.html">Contacto</a></li>
-                <li><a href="carrito.html" style="color: var(--accent-color); font-weight: 600;">Carrito 🛒 <span id="contador-carrito" class="badge-carrito">0</span></a></li>
-            </ul>
+    <div class="nav-container">
+        <a href="index.html" class="logo">Párrafo Segundo</a>
+        
+        <ul class="nav-links">
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="catalogo.html">Catálogo</a></li>
+            <li><a href="novedades.html">Novedades</a></li>
+            <li><a href="contacto.html">Contacto</a></li>
+            <li><a href="carrito.html">Carrito 🛒 <span class="badge-carrito">4</span></a></li>
+        </ul>
+
+        <!-- Agrupa el buscador y las acciones del usuario aquí -->
+        <div class="nav-right">
+            <div class="user-actions">
+                <!-- Redirección con el ícono de usuario -->
+                <a href="login.html" class="btn-icon" title="Iniciar Sesión">👤</a>
+            </div>            
             <div class="search-nav">
-                <input type="text" id="buscador-global" placeholder="Buscar libro..." class="search-input">
+                <input type="text" class="search-input" placeholder="Buscar libro...">
             </div>
+            
         </div>
-    </header>
+    </div>
+</header>
 
     <div class="page-header">
         <h1>Tu Carrito de Compras</h1>
@@ -36,24 +46,15 @@
         <div id="lista-carrito" class="carrito-container">
             <!-- Los libros aparecerán aquí -->
         </div>
-
-        <!-- NUEVA SECCIÓN: Caja de Total y Botones -->
-        <div class="carrito-total" id="seccion-total" style="text-align: center; margin-top: 40px; border-top: 1px solid #eee; padding-top: 30px;">
-            
-            <!-- Botón sutil para vaciar todo el carrito -->
-            <div>
-                <button class="btn-vaciar" onclick="vaciarCarrito()">
-                    Vaciar todo el carrito
-                </button>
-            </div>
     </main>
 
     <footer>
         <p>&copy; 2026 Librería - Párrafo Segundo. Todos los derechos reservados.</p>
     </footer>
 
-    <script src="../js/toasts.js?v=70"></script>
-    <script src="../js/libros.js?v=70"></script>
-    <script src="../js/carrito.js?v=70"></script>
+    <script src="../js/toasts.js"></script>
+    <script src="../js/libros.js"></script>
+    <script src="../js/carrito.js?v=1"></script>
+
 </body>
 </html>

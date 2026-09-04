@@ -17,7 +17,7 @@ if (contenedorListaCarrito) {
         let totalPagar = 0; 
 
         if (carrito.length === 0) {
-            contenedorListaCarrito.innerHTML = '<p class="carrito-vacio">Tu carrito está vacío. ¡Ve al catálogo para agregar libros!</p>';
+            contenedorListaCarrito.innerHTML = '<p class="carrito-vacio">Tu carrito está vacío. ¡Ve al <a href="catalogo.html" style="color: #e67e22; text-decoration: underline; font-weight: bold;">catálogo</a> para agregar libros!</p>';
             return; 
         }
 
@@ -70,7 +70,7 @@ if (contenedorListaCarrito) {
         const totalHTML = `
             <div style="text-align: right; padding: 25px 15px; border-top: 2px solid #ddd; margin-top: 20px;">
                 <h2 style="margin: 0; font-family: 'Merriweather', serif; color: #2c3e50;">Total a pagar: <span style="color: #e74c3c;">${enteroAPrecio(totalPagar)}</span></h2>
-                <button class="btn-agregar" style="margin-top: 15px; background-color: #27ae60; width: auto; padding: 10px 40px; font-size: 1.1rem;" onclick="alert('¡Gracias por tu compra en Párrafo Segundo!')">Finalizar Compra</button>
+            <button class="btn-agregar" style="margin-top: 15px; background-color: #27ae60; width: auto; padding: 10px 40px; font-size: 1.1rem;" onclick="window.location.href='checkout.html'">Finalizar Compra</button>
             </div>
         `;
         contenedorListaCarrito.innerHTML += totalHTML;

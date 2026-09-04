@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <!-- Tus metas, fuentes y estilos habituales -->
+    <meta charset="UTF-8">
+    <title>Checkout - Párrafo Segundo</title>
+    <link rel="stylesheet" href="../css/estilos.css?v=80">
+</head>
+<body>
+    <main class="container" style="display: flex; gap: 40px; margin-top: 40px;">
+        
+        <!-- Columna Izquierda: Formulario -->
+        <div class="checkout-form" style="flex: 2;">
+            <h2>Datos de Envío</h2>
+            <form id="formulario-pago">
+                <div class="form-group">
+                    <label>Dirección completa</label>
+                    <input type="text" required placeholder="Ej: 6 Norte 455, Viña del Mar">
+                </div>
+                <div class="form-group">
+                    <label>Región</label>
+                    <input type="text" required placeholder="Ej: Región de Valparaíso">
+                </div>
+                <button type="submit" class="btn-submit">Confirmar y Pagar</button>
+            </form>
+        </div>
+
+        <!-- Columna Derecha: Resumen -->
+        <div class="checkout-resumen" style="flex: 1; background: #f9f9f9; padding: 20px; border-radius: 8px;">
+            <h3>Resumen del Pedido</h3>
+            <h2 id="total-checkout" style="color: #e74c3c;">$0</h2>
+        </div>
+
+    </main>
+    <!-- Primero cargamos la base de datos de libros -->
+    <script src="../js/libros.js?v=85"></script>
+    <!-- Luego cargamos la lógica del checkout -->
+    <script src="../js/checkout.js?v=85"></script>
+</body>
+</html>
+</body>
+</html>
