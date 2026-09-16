@@ -18,8 +18,26 @@
                     <input type="text" required placeholder="Ej: 6 Norte 455, Viña del Mar">
                 </div>
                 <div class="form-group">
-                    <label>Región</label>
-                    <input type="text" required placeholder="Ej: Región de Valparaíso">
+                    <label for="region">Región</label>
+                    <select id="region" name="region" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-family: inherit; background-color: white;">
+                        <option value="" disabled selected>Selecciona una región...</option>
+                        <option value="Arica y Parinacota">Región de Arica y Parinacota</option>
+                        <option value="Tarapacá">Región de Tarapacá</option>
+                        <option value="Antofagasta">Región de Antofagasta</option>
+                        <option value="Atacama">Región de Atacama</option>
+                        <option value="Coquimbo">Región de Coquimbo</option>
+                        <option value="Valparaíso">Región de Valparaíso</option>
+                        <option value="Metropolitana">Región Metropolitana de Santiago</option>
+                        <option value="O'Higgins">Región del Libertador Gral. Bernardo O'Higgins</option>
+                        <option value="Maule">Región del Maule</option>
+                        <option value="Ñuble">Región de Ñuble</option>
+                        <option value="Biobío">Región del Biobío</option>
+                        <option value="La Araucanía">Región de La Araucanía</option>
+                        <option value="Los Ríos">Región de Los Ríos</option>
+                        <option value="Los Lagos">Región de Los Lagos</option>
+                        <option value="Aysén">Región de Aysén del Gral. Carlos Ibáñez del Campo</option>
+                        <option value="Magallanes">Región de Magallanes y de la Antártica Chilena</option>
+                    </select>
                 </div>
                 <button type="submit" class="btn-submit">Confirmar y Pagar</button>
             </form>

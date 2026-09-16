@@ -14,13 +14,10 @@
 }
 
 body {
-    /* 1. Tus estilos visuales originales */
     font-family: 'Poppins', sans-serif;
     background-color: var(--bg-color);
     color: var(--text-color);
     line-height: 1.6;
-    
-    /* 2. Las reglas de estructura para anclar el footer */
     display: flex;
     flex-direction: column;
     min-height: 100vh;
@@ -40,47 +37,15 @@ a {
     color: inherit;
 }
 
-/* Barra de Navegación */
+/* ==========================================
+   BARRA DE NAVEGACIÓN Y CABECERA
+   ========================================== */
 header {
     background-color: var(--white);
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     position: relative;
     top: 0;
     z-index: 1000;
-}
-
-/* Pestaña 1: Catalogo */
-.page-header {
-    background-color: var(--primary-color);
-    color: var(--white);
-    text-align: center;
-    padding: 60px 20px;
-    margin-bottom: 40px;
-}
-
-.page-header h1 {
-    margin-bottom: 20px;
-    font-size: 2.5rem;
-}
-
-.page-header p {
-    margin: 0;
-    font-size: 1.2rem;
-}
-
-/* catalogo: Tonos azules*/
-.azul {
-    --primary-color: #1e3a8a; 
-}
-
-/* novedades: Tonos Naranjas*/
-.naranja {
-    --primary-color: #c2410c; 
-}
-
-/* contacto: Tonos Morados */
-.morado {
-    --primary-color: #6b21a8; 
 }
 
 .nav-container {
@@ -114,7 +79,68 @@ header {
     color: var(--accent-color);
 }
 
-/* Sección Hero (Bienvenida) */
+/* Buscador en la navegación */
+.search-nav {
+    margin-left: 20px;
+}
+
+.search-nav .search-input {
+    padding: 8px 15px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    outline: none;
+    width: 200px;
+    background-color: #f9f9f9;
+    transition: all 0.3s ease;
+}
+
+.search-nav .search-input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 5px rgba(44, 62, 80, 0.2);
+    width: 250px;
+    background-color: var(--white);
+}
+
+.badge-carrito {
+    background-color: #e74c3c;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 8px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    margin-left: 5px;
+    vertical-align: middle;
+}
+
+/* Encabezados de páginas temáticas */
+.page-header {
+    background-color: var(--primary-color);
+    color: var(--white);
+    text-align: center;
+    padding: 60px 20px;
+    margin-bottom: 40px;
+}
+
+.page-header h1 {
+    margin-bottom: 20px;
+    font-size: 2.5rem;
+}
+
+.page-header p {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+/* Clases para variantes de color por sección */
+.azul { --primary-color: #1e3a8a; }
+.naranja { --primary-color: #c2410c; }
+.morado { --primary-color: #6b21a8; }
+
+/* ==========================================
+   SECCIÓN HERO (BIENVENIDA)
+   ========================================== */
 .hero {
     background: linear-gradient(rgba(44, 62, 80, 0.7), rgba(44, 62, 80, 0.7)), url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=1200&q=80') no-repeat center center/cover;
     color: var(--white);
@@ -146,7 +172,9 @@ header {
     background-color: #d35400;
 }
 
-/* Sección de Catálogo / Destacados */
+/* ==========================================
+   CATÁLOGO Y TARJETAS DE LIBROS
+   ========================================== */
 .container {
     max-width: 1200px;
     margin: 50px auto;
@@ -162,9 +190,8 @@ header {
 
 .book-grid {
     display: grid !important;
-    /* Cambiamos '1fr' por '280px'. Así, si sobra espacio, el libro no pasará de ese ancho */
     grid-template-columns: repeat(auto-fit, minmax(220px, 280px)) !important; 
-    justify-content: center !important; /* Magia: centra los libros cuando son poquitos */
+    justify-content: center !important;
     gap: 30px;
     width: 100%;
     max-width: 1200px;
@@ -178,10 +205,15 @@ header {
     overflow: hidden;
     box-shadow: 0 4px 10px rgba(0,0,0,0.05);
     transition: transform 0.3s;
+    position: relative;
 }
 
 .book-card:hover {
     transform: translateY(-5px);
+}
+
+.book-card.hide {
+    display: none;
 }
 
 .book-cover {
@@ -192,19 +224,19 @@ header {
 }
 
 .badge-nuevo {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background-color: var(--accent-color);
-            color: var(--white);
-            padding: 5px 12px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            border-radius: 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background-color: var(--accent-color);
+    color: var(--white);
+    padding: 5px 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border-radius: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
 
 .book-info {
     padding: 20px;
@@ -228,17 +260,32 @@ header {
     font-size: 1.1rem;
 }
 
-/* Botones de Filtro (Centrados y con Divisor) */
+.btn-agregar {
+    width: 100%;
+    padding: 10px;
+    margin-top: 15px;
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    transition: background 0.3s;
+}
+
+.btn-agregar:hover {
+    background-color: var(--accent-color);
+}
+
+/* Botones de Filtro */
 .filter-buttons {
     display: flex;
-    justify-content: center; /* Centra los botones horizontalmente */
+    justify-content: center;
     gap: 15px;
     flex-wrap: wrap;
-    margin: 40px auto; /* Espacio superior/inferior */
+    margin: 40px auto;
     max-width: 1200px;
     padding: 0 20px 35px 20px;
-    
-    /* Línea divisoria inferior */
     border-bottom: 2px solid #eaeaea; 
 }
 
@@ -264,31 +311,9 @@ header {
     color: var(--white);
 }
 
-/* Pie de página */
-footer {
-    background-color: var(--primary-color);
-    color: var(--white);
-    text-align: center;
-    padding: 30px 20px;
-    margin-top: 60px;
-}
-
-footer p {
-    font-size: 0.9rem;
-    font-weight: 300;
-}
-
-/* Oculta los elementos cuando se les quita la vista */
-.book-card.hide {
-    display: none;
-}
-
-.container {
-    max-width: 1000px;
-    margin: 0 auto 60px auto;
-    padding: 0 20px;
-    }
-
+/* ==========================================
+   FORMULARIO DE CONTACTO
+   ========================================== */
 .contact-wrapper {
     display: flex;
     flex-wrap: wrap;
@@ -297,28 +322,28 @@ footer p {
     padding: 40px;
     border-radius: 8px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    }
+}
 
 .contact-form {
     flex: 1;
     min-width: 300px;
-    }
+}
 
 .contact-form h2 {
     margin-bottom: 20px;
     color: var(--primary-color);
-    }
+}
 
 .form-group {
     margin-bottom: 20px;
-    }
+}
 
 .form-group label {
     display: block;
     margin-bottom: 8px;
     font-weight: 600;
     font-size: 0.9rem;
-    }
+}
 
 .form-group input, 
 .form-group textarea {
@@ -328,13 +353,13 @@ footer p {
     border-radius: 5px;
     font-family: inherit;
     transition: border-color 0.3s;
-    }
+}
 
 .form-group input:focus, 
 .form-group textarea:focus {
     outline: none;
     border-color: var(--accent-color);
-    }
+}
 
 .btn-submit {
     background-color: var(--accent-color);
@@ -348,62 +373,11 @@ footer p {
     transition: background 0.3s;
     width: 100%;
     font-size: 1rem;
-    }
-
-    /* --- Buscador Global en el menú --- */
-.search-nav {
-    margin-left: 20px;
 }
 
-.search-nav .search-input {
-    padding: 8px 15px;
-    font-family: 'Poppins', sans-serif;
-    font-size: 0.9rem;
-    border: 1px solid #ddd;
-    border-radius: 20px;
-    outline: none;
-    width: 200px;
-    background-color: #f9f9f9;
-    transition: all 0.3s ease;
-}
-
-.search-nav .search-input:focus {
-    border-color: var(--primary-color);
-    box-shadow: 0 0 5px rgba(44, 62, 80, 0.2);
-    width: 250px; /* Se expande un poco al escribir */
-    background-color: var(--white);
-}
-
-.btn-agregar {
-    width: 100%;
-    padding: 10px;
-    margin-top: 15px;
-    background-color: var(--primary-color);
-    color: var(--white);
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    font-family: 'Poppins', sans-serif;
-    transition: background 0.3s;
-}
-
-.btn-agregar:hover {
-    background-color: var(--accent-color);
-}
-
-/* --- Estilos del Carrito --- */
-.badge-carrito {
-    background-color: #e74c3c; /* Un rojo elegante */
-    color: white;
-    border-radius: 50%;
-    padding: 2px 8px;
-    font-size: 0.8rem;
-    font-weight: bold;
-    margin-left: 5px;
-    vertical-align: middle;
-}
-
-/* --- Estilos de la página del Carrito --- */
+/* ==========================================
+   PÁGINA Y VISTA DEL CARRITO
+   ========================================== */
 .carrito-container {
     max-width: 800px;
     margin: 0 auto;
@@ -430,63 +404,6 @@ footer p {
     cursor: pointer;
 }
 
-.carrito-vacio {
-    text-align: center;
-    font-size: 1.2rem;
-    color: #666;
-    padding: 40px;
-}
-
-/* ==========================================
-   ESTILOS DE NOTIFICACIONES (TOASTS)
-   ========================================== */
-#toast-container {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    z-index: 9999; /* Para que siempre esté por encima de todo */
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.toast {
-    background-color: #2c3e50; /* Un azul oscuro muy editorial */
-    color: #ffffff;
-    padding: 15px 25px;
-    border-radius: 8px;
-    font-family: 'Poppins', sans-serif;
-    font-size: 0.95rem;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    /* Animación de entrada */
-    animation: deslizarToast 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-    transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-/* Clase para cuando el toast se va de la pantalla */
-.toast.oculto {
-    opacity: 0;
-    transform: translateX(100%);
-}
-
-/* La magia del movimiento */
-@keyframes deslizarToast {
-    from {
-        transform: translateX(100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
-
-/* ==========================================
-   BOTONES DE SUMAR/RESTAR EN CARRITO
-   ========================================== */
 .btn-cantidad {
     background-color: #f1f1f1;
     border: 1px solid #dcdcdc;
@@ -507,6 +424,37 @@ footer p {
 .btn-cantidad:hover {
     background-color: #e2e8f0;
     border-color: #cbd5e1;
+}
+
+.btn-vaciar {
+    background: none;
+    border: none;
+    color: #95a5a6;
+    text-decoration: underline;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.95rem;
+    transition: color 0.3s ease;
+}
+
+.btn-vaciar:hover {
+    color: #7f8c8d;
+}
+
+.carrito-vacio-mensaje {
+    text-align: center;
+    padding: 60px 20px;
+    font-family: 'Merriweather', serif;
+    color: #7f8c8d;
+    font-size: 1.3rem;
+}
+
+.carrito-vacio-mensaje a {
+    color: #e67e22;
+    text-decoration: underline;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
 }
 
 /* ==========================================
@@ -570,35 +518,217 @@ footer p {
     margin-bottom: 25px;
 }
 
-/* Botón para vaciar el carrito */
-.btn-vaciar {
-    background: none;
-    border: none;
-    color: #95a5a6;
-    text-decoration: underline;
-    cursor: pointer;
+/* ==========================================
+   NOTIFICACIONES (TOASTS)
+   ========================================== */
+#toast-container {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.toast {
+    background-color: #2c3e50;
+    color: #ffffff;
+    padding: 15px 25px;
+    border-radius: 8px;
     font-family: 'Poppins', sans-serif;
     font-size: 0.95rem;
-    transition: color 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    animation: deslizarToast 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-.btn-vaciar:hover {
-    color: #7f8c8d; /* Se oscurece un poco al pasar el mouse */
+.toast.oculto {
+    opacity: 0;
+    transform: translateX(100%);
 }
 
-/* Mensaje de carrito vacío */
-.carrito-vacio-mensaje {
+@keyframes deslizarToast {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* ==========================================
+   VENTANA EMERGENTE (MODAL LOGIN/MI CUENTA)
+   ========================================== */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.65);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
+
+.modal-contenedor {
+    background: var(--white);
+    width: 90%;
+    max-width: 500px;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    position: relative;
+    transform: translateY(-20px);
+    transition: transform 0.3s ease;
+    max-height: 85vh;
+    overflow-y: auto;
+}
+
+.modal-overlay.active .modal-contenedor {
+    transform: translateY(0);
+}
+
+.btn-cerrar-modal {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #777;
+    font-weight: bold;
+}
+
+.btn-cerrar-modal:hover {
+    color: #000;
+}
+
+/* ==========================================
+   PIE DE PÁGINA (FOOTER)
+   ========================================== */
+footer {
+    background-color: var(--primary-color);
+    color: var(--white);
     text-align: center;
-    padding: 60px 20px;
-    font-family: 'Merriweather', serif;
-    color: #7f8c8d;
-    font-size: 1.3rem;
+    padding: 30px 20px;
+    margin-top: 60px;
 }
 
-.carrito-vacio-mensaje a {
-    color: #e67e22; /* Tu color naranjo característico */
-    text-decoration: underline;
+footer p {
+    font-size: 0.9rem;
+    font-weight: 300;
+}
+
+.modal-tabs {
+    display: flex;
+    border-bottom: 2px solid #eaeaea;
+    margin-bottom: 25px;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 12px;
+    background: none;
+    border: none;
     font-family: 'Poppins', sans-serif;
     font-size: 1rem;
     font-weight: 600;
+    color: #7f8c8d;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.tab-btn.active {
+    color: var(--primary-color);
+    border-bottom-color: var(--accent-color);
+}
+
+.texto-cambio-vista {
+    text-align: center;
+    margin-top: 18px;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.texto-cambio-vista a {
+    color: var(--accent-color);
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+.perfil-bloque {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.perfil-bloque h3 {
+    font-size: 0.95rem;
+    color: var(--primary-color);
+    margin-bottom: 8px;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 5px;
+}
+
+.perfil-bloque p {
+    font-size: 0.88rem;
+    margin-bottom: 4px;
+}
+
+.lista-perfil {
+    list-style: none;
+    font-size: 0.85rem;
+    padding: 0;
+}
+
+.lista-perfil li {
+    margin-bottom: 6px;
+}
+
+.historial-pedidos {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.pedido-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #ffffff;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #edf2f7;
+}
+
+.badge-estado {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 12px;
+}
+
+.badge-estado.entregado {
+    background-color: #dcfce7;
+    color: #15803d;
 }

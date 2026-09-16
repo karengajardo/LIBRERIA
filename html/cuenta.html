@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Cuenta - Párrafo Segundo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/estilos.css">
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo">📚 Párrafo Segundo</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="catalogo.html">Catálogo</a></li>
+                <li><a href="novedades.html">Novedades</a></li>
+                <li><a href="contacto.html">Contacto</a></li>
+                <li><a href="carrito.html">Carrito 🛒 <span id="contador-carrito" class="badge-carrito">0</span></a></li>
+                <li><a href="cuenta.html">👤 Mi Cuenta</a></li>
+
+            </ul>
+        </div>
+    </header>
+
+    <div class="page-header azul">
+        <h1>Mi Cuenta</h1>
+        <p>Gestiona tus datos personales, direcciones y pedidos</p>
+    </div>
+
+    <main class="container" style="max-width: 800px;">
+        
+        <!-- VISTA DE LOGIN Y REGISTRO (SI NO HAY SESIÓN INICIADA) -->
+        <div id="contenedor-login-registro" class="contact-wrapper" style="max-width: 480px; margin: 0 auto;">
+            <div class="modal-tabs" style="width: 100%;">
+                <button id="tab-login" class="tab-btn active">Iniciar Sesión</button>
+                <button id="tab-registro" class="tab-btn">Registrarse</button>
+            </div>
+
+            <!-- Formulario Iniciar Sesión -->
+            <div id="vista-login" style="width: 100%;">
+                <form id="formulario-login">
+                    <div class="form-group">
+                        <label for="login-email">Correo Electrónico</label>
+                        <input type="email" id="login-email" required placeholder="tucorreo@dominio.cl">
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Contraseña</label>
+                        <input type="password" id="login-password" required placeholder="********">
+                    </div>
+                    <button type="submit" class="btn-submit">Ingresar</button>
+                </form>
+            </div>
+
+            <!-- Formulario Registro -->
+            <div id="vista-registro" style="width: 100%; display: none;">
+                <form id="formulario-registro">
+                    <div class="form-group">
+                        <label for="reg-nombre">Nombre Completo</label>
+                        <input type="text" id="reg-nombre" required placeholder="Tu nombre y apellido">
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-email">Correo Electrónico</label>
+                        <input type="email" id="reg-email" required placeholder="tucorreo@dominio.cl">
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-password">Contraseña</label>
+                        <input type="password" id="reg-password" required placeholder="Crea una contraseña">
+                    </div>
+                    <button type="submit" class="btn-submit">Crear Cuenta</button>
+                </form>
+            </div>
+        </div>
+
+                <!-- VISTA DE MI CUENTA -->
+        <div id="contenedor-perfil" style="display: none;">
+            
+            <div class="perfil-bloque">
+                <h3>👤 Datos de la Cuenta</h3>
+                <p><strong>Nombre Completo:</strong> <span id="perfil-nombre">-</span></p>
+                <p><strong>Correo Electrónico:</strong> <span id="perfil-email">-</span></p>
+                <p><strong>Tipo de Usuario:</strong> <span id="perfil-rol">-</span></p>
+            </div>
+
+            <div class="perfil-bloque">
+                <h3>📍 Direcciones Guardadas</h3>
+                <ul class="lista-perfil">
+                    <li><strong>Casa:</strong> Av. Providencia #1234, Depto 402, Santiago</li>
+                    <li><strong>Oficina:</strong> Av. Andrés Bello #2688, Las Condes</li>
+                </ul>
+            </div>
+
+            <div class="perfil-bloque">
+                <h3>📦 Compras Realizadas</h3>
+                <div class="historial-pedidos">
+                    <div class="pedido-item">
+                        <div>
+                            <strong>Pedido #00124</strong> - <i>10 Sep, 2026</i>
+                            <p style="font-size: 0.85rem; color: #666; margin: 2px 0 0 0;">Cien años de soledad, 1984</p>
+                        </div>
+                        <span class="badge-estado entregado">Entregado</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BOTÓN DE ADMINISTRACIÓN (Oculto por defecto) -->
+            <button id="btn-ir-admin" class="btn-submit" style="background-color: #2b6cb0; width: 100%; margin-top: 15px; display: none;">
+                ⚙️ Ir al Panel de Administración
+            </button>
+
+            <!-- BOTÓN CERRAR SESIÓN -->
+            <button id="btn-cerrar-sesion" class="btn-submit" style="background-color: #e74c3c; width: 100%; margin-top: 10px;">
+                Cerrar Sesión
+            </button>
+        </div>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Librería - Párrafo Segundo. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="../js/perfil.js"></script>
+</body>
+</html>

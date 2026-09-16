@@ -10,23 +10,26 @@
 </head>
 <body>
 
-    <!-- Navegación -->
     <header>
-        <div class="nav-container">
-            <a href="index.html" class="logo">📚 Párrafo Segundo</a>
-            <ul class="nav-links">
-                <li><a href="index.html">Inicio</a></li>
-                <li><a href="catalogo.html">Catálogo</a></li>
-                <!-- Novedades activo -->
-                <li><a href="novedades.html" style="color: var(--accent-color); font-weight: 600;">Novedades</a></li>
-                <li><a href="contacto.html">Contacto</a></li>
-                <li><a href="carrito.html">Carrito 🛒 <span id="contador-carrito" class="badge-carrito">0</span></a></li>
-            </ul>
-            <div class="search-nav">
-                <input type="text" id="buscador-global" placeholder="Buscar libro..." class="search-input">
-            </div>
+    <div class="nav-container">
+        <a href="index.html" class="logo">Párrafo Segundo</a>
+        
+        <!-- Todos los enlaces agrupados en la misma lista -->
+        <ul class="nav-links">
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="catalogo.html">Catálogo</a></li>
+            <li><a href="novedades.html">Novedades</a></li>
+            <li><a href="contacto.html">Contacto</a></li>
+            <li><a href="carrito.html">Carrito 🛒 <span id="contador-carrito" class="badge-carrito">0</span></a></li>
+            <li><a href="cuenta.html">👤 Mi Cuenta</a></li>
+        </ul>
+
+        <!-- Buscador alineado a la derecha -->
+        <div class="search-nav">
+            <input type="text" class="search-input" placeholder="Buscar libro...">
         </div>
-    </header>
+    </div>
+</header>
 
     <!-- Encabezado de la página -->
     <div class="page-header naranja">
@@ -50,6 +53,7 @@
     <script src="../js/libros.js"></script>
     <script src="../js/toasts.js?v=60"></script>
     <script src="../js/libros.js?v=60"></script>
+    <script src="../js/login.js"></script>
     
 </body>
 </html>
