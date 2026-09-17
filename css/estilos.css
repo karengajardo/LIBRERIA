@@ -732,3 +732,82 @@ footer p {
     background-color: #dcfce7;
     color: #15803d;
 }
+
+/* ==========================================
+   ADAPTACIÓN MÓVIL Y RESPONSIVE
+   ========================================== */
+
+/* Garantiza que el padding no altere el ancho real de las cajas */
+* {
+    box-sizing: border-box;
+}
+
+/* Ajuste general de contenedores para pantallas pequeñas */
+.container, 
+#contenedor-login-registro, 
+#contenedor-perfil {
+    width: 100% !important;
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+}
+
+/* Reglas aplicadas a dispositivos móviles (máximo 768px) */
+@media (max-width: 768px) {
+
+    /* 1. Menú de navegación flexible */
+    .nav-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        padding: 10px;
+    }
+
+    .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        padding: 0;
+        margin: 0;
+    }
+
+    /* 2. Bloques del Perfil y Formularios */
+    .perfil-bloque, 
+    .contact-wrapper {
+        padding: 15px !important;
+        margin-bottom: 15px;
+        width: 100% !important;
+    }
+
+    /* 3. Reorganizar Historial de Compras */
+    .pedido-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .badge-estado {
+        align-self: flex-start;
+    }
+
+    /* 4. Adaptación de Pestañas y Entradas */
+    .modal-tabs {
+        display: flex;
+        width: 100%;
+    }
+
+    .tab-btn {
+        flex: 1;
+        text-align: center;
+        padding: 10px 5px;
+    }
+
+    /* Evita el zoom automático en inputs de iOS y ajusta botones */
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    .btn-submit {
+        width: 100% !important;
+        font-size: 16px !important; 
+        box-sizing: border-box;
+    }
+}

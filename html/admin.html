@@ -17,41 +17,47 @@
                 <li><a href="catalogo.html">Catálogo</a></li>
                 <li><a href="novedades.html">Novedades</a></li>
                 <li><a href="contacto.html">Contacto</a></li>
-                <li><a href="cuenta.html">👤 Mi Cuenta</a></li>
-
+                <li><a href="cuenta.html">Mi Cuenta 👤</a></li>
+                <li><a href="admin.html" style="color: var(--accent-color); font-weight: 600;">Admin ⚙️</a></li>
             </ul>
         </div>
     </header>
 
-    <div class="page-header morado">
+    <div class="page-header azul">
         <h1>Panel de Administración</h1>
-        <p>Agrega o elimina elementos del catálogo general</p>
+        <p>Agrega, modifica o elimina elementos del catálogo general</p>
     </div>
 
-    <main class="container" style="max-width: 800px;">
+    <main class="container" style="max-width: 850px;">
         
         <!-- Formulario para agregar libro -->
-        <section style="background: #f9f9f9; padding: 30px; border-radius: 8px; margin-bottom: 40px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
-            <h2 style="margin-bottom: 20px; font-size: 1.5rem; color: var(--primary-color);">Agregar Nuevo Libro</h2>
+        <section style="background: #ffffff; padding: 25px; border-radius: 8px; margin-bottom: 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: 1px solid #e2e8f0;">
+            <h2 style="margin-bottom: 20px; font-size: 1.4rem; color: var(--primary-color);">➕ Agregar Nuevo Libro</h2>
             <form id="form-admin-libro">
                 <div style="margin-bottom: 15px;">
-                    <label style="font-weight: 600;">Título:</label><br>
-                    <input type="text" id="admin-titulo" required style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;">
+                    <label style="font-weight: 600;">Título del Libro:</label>
+                    <input type="text" id="admin-titulo" required placeholder="Ej: Cien Años de Soledad" style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;">
                 </div>
                 <div style="margin-bottom: 15px;">
-                    <label style="font-weight: 600;">Autor:</label><br>
-                    <input type="text" id="admin-autor" required style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;">
+                    <label style="font-weight: 600;">Autor:</label>
+                    <input type="text" id="admin-autor" required placeholder="Ej: Gabriel García Márquez" style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;">
+                </div>
+                <div style="display: flex; gap: 15px; margin-bottom: 15px; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 180px;">
+                        <label style="font-weight: 600;">Precio ($):</label>
+                        <input type="text" id="admin-precio" placeholder="$15.000" required style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;">
+                    </div>
+                    <div style="flex: 1; min-width: 180px;">
+                        <label style="font-weight: 600;">Cantidad en Stock:</label>
+                        <input type="number" id="admin-stock" value="10" min="0" required style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;">
+                    </div>
                 </div>
                 <div style="margin-bottom: 15px;">
-                    <label style="font-weight: 600;">Precio:</label><br>
-                    <input type="text" id="admin-precio" placeholder="$15.000" required style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;">
-                </div>
-                <div style="margin-bottom: 15px;">
-                    <label style="font-weight: 600;">URL de la Imagen (Portada):</label><br>
+                    <label style="font-weight: 600;">URL de la Portada (Imagen):</label>
                     <input type="url" id="admin-imagen" placeholder="https://..." required style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;">
                 </div>
                 <div style="margin-bottom: 15px;">
-                    <label style="font-weight: 600;">Categoría:</label><br>
+                    <label style="font-weight: 600;">Categoría:</label>
                     <select id="admin-categoria" style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;">
                         <option value="clasicos">Clásicos</option>
                         <option value="latinoamericanos">Latinoamericanos</option>
@@ -60,27 +66,71 @@
                     </select>
                 </div>
                 <div style="margin-bottom: 20px;">
-                    <label><input type="checkbox" id="admin-nuevo"> Marcar como novedad/nuevo</label>
+                    <label><input type="checkbox" id="admin-nuevo"> Marcar como Novedad/Nuevo</label>
                 </div>
-                <button type="submit" class="btn" style="width: 100%; padding: 12px; cursor: pointer;">Guardar Libro en el Catálogo</button>
+                <button type="submit" class="btn-submit">Guardar Libro en el Catálogo</button>
             </form>
         </section>
 
-        <!-- Lista de administración para borrar -->
+        <!-- Lista de administración para editar o borrar -->
         <section>
-            <h2 style="margin-bottom: 20px; font-size: 1.5rem; color: var(--primary-color);">Libros Actuales en el Sistema</h2>
+            <h2 style="margin-bottom: 20px; font-size: 1.4rem; color: var(--primary-color);">📚 Libros en el Sistema</h2>
             <div id="admin-lista-libros">
-                <!-- Se llena mediante JS -->
+                <!-- Se renderiza vía JS -->
             </div>
         </section>
 
     </main>
 
+    <!-- MODAL VENTANA FLOTANTE PARA EDITAR LIBRO -->
+    <div id="modal-editar-libro" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; padding: 15px;">
+        <div style="background: white; padding: 25px; border-radius: 8px; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto;">
+            <h2 style="margin-bottom: 15px; color: var(--primary-color);">✏️ Editar Libro</h2>
+            <form id="form-editar-libro">
+                <input type="hidden" id="edit-index">
+                <div style="margin-bottom: 10px;">
+                    <label style="font-weight: 600;">Título:</label>
+                    <input type="text" id="edit-titulo" required style="width: 100%; padding: 8px; margin-top: 4px; border: 1px solid #ccc; border-radius: 4px;">
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <label style="font-weight: 600;">Autor:</label>
+                    <input type="text" id="edit-autor" required style="width: 100%; padding: 8px; margin-top: 4px; border: 1px solid #ccc; border-radius: 4px;">
+                </div>
+                <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                    <div style="flex: 1;">
+                        <label style="font-weight: 600;">Precio:</label>
+                        <input type="text" id="edit-precio" required style="width: 100%; padding: 8px; margin-top: 4px; border: 1px solid #ccc; border-radius: 4px;">
+                    </div>
+                    <div style="flex: 1;">
+                        <label style="font-weight: 600;">Stock:</label>
+                        <input type="number" id="edit-stock" min="0" required style="width: 100%; padding: 8px; margin-top: 4px; border: 1px solid #ccc; border-radius: 4px;">
+                    </div>
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <label style="font-weight: 600;">Categoría:</label>
+                    <select id="edit-categoria" style="width: 100%; padding: 8px; margin-top: 4px; border: 1px solid #ccc; border-radius: 4px;">
+                        <option value="clasicos">Clásicos</option>
+                        <option value="latinoamericanos">Latinoamericanos</option>
+                        <option value="contemporaneos">Contemporáneos</option>
+                        <option value="asiaticos">Asiáticos</option>
+                    </select>
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label style="font-weight: 600;">URL Portada:</label>
+                    <input type="url" id="edit-imagen" required style="width: 100%; padding: 8px; margin-top: 4px; border: 1px solid #ccc; border-radius: 4px;">
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <button type="submit" class="btn-submit" style="background-color: #2b6cb0; flex: 1;">Guardar Cambios</button>
+                    <button type="button" id="btn-cancelar-editar" class="btn-submit" style="background-color: #718096; flex: 1;">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <footer>
         <p>&copy; 2026 Librería - Párrafo Segundo. Todos los derechos reservados.</p>
     </footer>
 
-    <script src="../js/toasts.js"></script>
     <script src="../js/libros.js"></script>
     <script src="../js/admin.js"></script>
 </body>
