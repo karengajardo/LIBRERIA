@@ -6,6 +6,8 @@ export function Login({ onLoginSuccess, onRegister, redirectTo = '/perfil' }) {
   const navigate = useNavigate();
   const [esRegistro, setEsRegistro] = useState(false);
   const [mensajeError, setMensajeError] = useState('');
+  const [mensajeExito, setMensajeExito] = useState('');
+  const [enviando, setEnviando] = useState(false);
   const [formData, setFormData] = useState({
     nombre: '',
     email: '',
@@ -20,36 +22,59 @@ export function Login({ onLoginSuccess, onRegister, redirectTo = '/perfil' }) {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setMensajeError('');
+    setMensajeExito('');
+    setEnviando(true);
 
-    if (esRegistro) {
-      if (!formData.nombre.trim()) {
-        setMensajeError('Ingresa tu nombre completo.');
-        return;
+    try {
+      if (esRegistro) {
+        if (!formData.nombre.trim()) {
+          setMensajeError('Ingresa tu nombre completo.');
+          return;
+        }
+
+        if (formData.password !== formData.confirmarPassword) {
+          setMensajeError('Las contraseñas no coinciden.');
+          return;
+        }
+
+        const registroExitoso = await onRegister({
+          nombre: formData.nombre.trim(),
+          email: formData.email.trim(),
+          password: formData.password
+        });
+        if (registroExitoso === 'login-required') {
+          setEsRegistro(false);
+          setFormData((actual) => ({
+            ...actual,
+            password: '',
+            confirmarPassword: ''
+          }));
+          setMensajeExito('Cuenta creada. Inicia sesión para continuar.');
+          return;
+        }
+        if (!registroExitoso) {
+          setMensajeError('Ya existe una cuenta con ese correo electrónico.');
+          return;
+        }
+      } else {
+        const inicioExitoso = await onLoginSuccess(formData.email.trim(), formData.password);
+        if (!inicioExitoso) {
+          setMensajeError('Correo electrónico o contraseña incorrectos.');
+          return;
+        }
       }
 
-      if (formData.password !== formData.confirmarPassword) {
-        setMensajeError('Las contraseñas no coinciden.');
-        return;
-      }
-
-      const registroExitoso = onRegister({
-        nombre: formData.nombre.trim(),
-        email: formData.email.trim(),
-        password: formData.password
-      });
-      if (!registroExitoso) {
-        setMensajeError('Ya existe una cuenta con ese correo electrónico.');
-        return;
-      }
-    } else if (!onLoginSuccess(formData.email.trim(), formData.password)) {
-      setMensajeError('Correo electrónico o contraseña incorrectos.');
-      return;
+      navigate(redirectTo);
+    } catch (error) {
+      setMensajeError(error instanceof Error
+        ? error.message
+        : 'No se pudo completar la solicitud. Intenta nuevamente.');
+    } finally {
+      setEnviando(false);
     }
-
-    navigate(redirectTo);
   };
 
   return (
@@ -69,19 +94,27 @@ export function Login({ onLoginSuccess, onRegister, redirectTo = '/perfil' }) {
           onChange={handleChange} 
           onSubmit={handleSubmit} 
           esRegistro={esRegistro}
+          enviando={enviando}
         />
         {mensajeError && (
           <p role="alert" style={{ color: '#c0392b', margin: '16px 0 0', textAlign: 'center' }}>
             {mensajeError}
           </p>
         )}
+        {mensajeExito && (
+          <p role="status" style={{ color: '#237a3b', margin: '16px 0 0', textAlign: 'center' }}>
+            {mensajeExito}
+          </p>
+        )}
         <p style={{ textAlign: 'center', margin: '20px 0 0' }}>
           {esRegistro ? '¿Ya tienes cuenta?' : '¿Aún no tienes cuenta?'}{' '}
           <button
             type="button"
+            disabled={enviando}
             onClick={() => {
               setEsRegistro((actual) => !actual);
               setMensajeError('');
+              setMensajeExito('');
             }}
             style={{ border: 'none', background: 'none', color: '#2c3e50', textDecoration: 'underline', cursor: 'pointer', font: 'inherit', fontWeight: 'bold' }}
           >

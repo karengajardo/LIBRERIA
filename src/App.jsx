@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { Home } from './pages/inicio';
@@ -12,35 +12,194 @@ import { Checkout } from './pages/Checkout';
 import { Login } from './pages/Login';
 import { Perfil } from './pages/Perfil';
 import { AdminDashboard } from './pages/AdminDashboard';
-import { catalogoLibros } from './data/libros';
-import { borrarSesion, guardarSesion, guardarUsuarios, leerSesion, leerUsuarios } from './data/usuarios';
-import './css/estilos.css';
+import { actualizarLibro, crearPedido, listarCatalogo, listarPedidos, loginUsuario, registrarUsuario } from './services/api';
 
 const ADMIN_EMAIL = 'parrafosegundo@admin.cl';
-const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD;
+
+function leerDatosRespuesta(respuesta) {
+  return respuesta?.data ?? respuesta;
+}
+
+function leerListaRespuesta(respuesta, propiedades) {
+  const datos = leerDatosRespuesta(respuesta);
+  if (Array.isArray(datos)) return datos;
+
+  const lista = propiedades
+    .map((propiedad) => datos?.[propiedad])
+    .find(Array.isArray);
+  if (lista) return lista;
+
+  throw new Error('El servidor devolvió una lista con un formato no válido.');
+}
+
+async function cargarCatalogoServidor() {
+  const respuesta = await listarCatalogo();
+  return leerListaRespuesta(respuesta, ['libros', 'catalogo', 'content']);
+}
+
+function leerTokenRespuesta(respuesta) {
+  return leerDatosRespuesta(respuesta)?.token || respuesta?.token;
+}
+
+function leerIdentidadToken(token) {
+  if (!token) return {};
+
+  const payload = token.split('.')[1];
+  if (!payload) return {};
+
+  try {
+    const base64 = payload.replace(/-/g, '+').replace(/_/g, '/');
+    const binario = atob(base64.padEnd(Math.ceil(base64.length / 4) * 4, '='));
+    const bytes = Uint8Array.from(binario, (caracter) => caracter.charCodeAt(0));
+    const claims = JSON.parse(new TextDecoder().decode(bytes));
+    return {
+      usuario: claims.email || claims.preferred_username || claims.sub || null,
+      nombre: claims.nombre || claims.name || claims.given_name || ''
+    };
+  } catch {
+    return {};
+  }
+}
+
+function limpiarDatosLocalesAntiguos() {
+  const clavesAntiguas = ['usuario', 'parrafo-segundo.usuarios', 'parrafo-segundo.sesion'];
+  clavesAntiguas.forEach((clave) => localStorage.removeItem(clave));
+
+  for (let indice = localStorage.length - 1; indice >= 0; indice -= 1) {
+    const clave = localStorage.key(indice);
+    if (clave?.startsWith('parrafo-segundo.pedidos.')) {
+      localStorage.removeItem(clave);
+    }
+  }
+}
 
 export default function App() {
   const [carrito, setCarrito] = useState([]);
   const [toastMensaje, setToastMensaje] = useState(null);
-  const [usuario, setUsuario] = useState(() => leerSesion());
-  const [nombreUsuario, setNombreUsuario] = useState(() => {
-    const emailSesion = leerSesion();
-    return leerUsuarios().find((cuenta) => cuenta.email === emailSesion)?.nombre || '';
+  const [usuario, setUsuario] = useState(() => {
+    const identidad = leerIdentidadToken(localStorage.getItem('token'));
+    return identidad.usuario;
   });
-  
-  // Estado global mutable para los libros del catálogo e inventario
-  const [libros, setLibros] = useState(catalogoLibros || []);
+  const [nombreUsuario, setNombreUsuario] = useState(() => (
+    leerIdentidadToken(localStorage.getItem('token')).nombre
+  ));
+  const [libros, setLibros] = useState([]);
+  const [cargandoCatalogo, setCargandoCatalogo] = useState(true);
+  const [refrescandoCatalogo, setRefrescandoCatalogo] = useState(false);
+  const [errorCatalogo, setErrorCatalogo] = useState('');
+  const [comprasUsuario, setComprasUsuario] = useState([]);
+  const [cargandoCompras, setCargandoCompras] = useState(() => (
+    Boolean(leerIdentidadToken(localStorage.getItem('token')).usuario)
+  ));
+  const [errorCompras, setErrorCompras] = useState('');
 
-  const [comprasUsuario, setComprasUsuario] = useState(() => {
-    const emailSesion = leerSesion();
-    return leerUsuarios().find((cuenta) => cuenta.email === emailSesion)?.compras || [];
-  });
+  useEffect(() => {
+    limpiarDatosLocalesAntiguos();
+  }, []);
+
+  useEffect(() => {
+    let activo = true;
+    let solicitudEnCurso = false;
+    let primeraCarga = true;
+
+    const actualizarCatalogo = async () => {
+      if (document.visibilityState !== 'visible') return;
+      if (solicitudEnCurso) return;
+      solicitudEnCurso = true;
+
+      try {
+        const catalogo = await cargarCatalogoServidor();
+        if (activo) {
+          setLibros(catalogo);
+          setErrorCatalogo('');
+        }
+      } catch (error) {
+        if (activo) {
+          setErrorCatalogo(error instanceof Error
+            ? `No se pudo actualizar el catálogo: ${error.message}`
+            : 'No se pudo actualizar el catálogo.');
+        }
+      } finally {
+        solicitudEnCurso = false;
+        if (activo && primeraCarga) {
+          primeraCarga = false;
+          setCargandoCatalogo(false);
+        }
+      }
+    };
+
+    const actualizarAlVolver = () => {
+      if (document.visibilityState === 'visible') actualizarCatalogo();
+    };
+
+    actualizarCatalogo();
+    const intervalo = window.setInterval(actualizarCatalogo, 30000);
+    window.addEventListener('focus', actualizarAlVolver);
+    document.addEventListener('visibilitychange', actualizarAlVolver);
+
+    return () => {
+      activo = false;
+      window.clearInterval(intervalo);
+      window.removeEventListener('focus', actualizarAlVolver);
+      document.removeEventListener('visibilitychange', actualizarAlVolver);
+    };
+  }, []);
+
+  useEffect(() => {
+    let activo = true;
+
+    if (!usuario) {
+      return () => {
+        activo = false;
+      };
+    }
+
+    listarPedidos()
+      .then((respuesta) => leerListaRespuesta(respuesta, ['pedidos', 'orders', 'content']))
+      .then((pedidos) => {
+        if (activo) {
+          setComprasUsuario(pedidos);
+          setCargandoCompras(false);
+        }
+      })
+      .catch((error) => {
+        if (activo) {
+          setErrorCompras(error instanceof Error ? error.message : 'No se pudo cargar el historial.');
+          setCargandoCompras(false);
+        }
+      })
+
+    return () => {
+      activo = false;
+    };
+  }, [usuario]);
 
   const mostrarToast = (mensaje) => {
     setToastMensaje(mensaje);
     setTimeout(() => {
       setToastMensaje(null);
     }, 3000);
+  };
+
+  const guardarSesionApi = (respuesta, emailFallback) => {
+    const datos = leerDatosRespuesta(respuesta);
+    const cuenta = datos?.usuario || datos?.user || datos;
+    const emailCuenta = cuenta?.email || emailFallback;
+    const token = leerTokenRespuesta(respuesta);
+
+    if (token) {
+      localStorage.setItem('token', token);
+    } else {
+      localStorage.removeItem('token');
+    }
+
+    setCargandoCompras(true);
+    setErrorCompras('');
+    setUsuario(emailCuenta);
+    setNombreUsuario(cuenta?.nombre || cuenta?.name || (emailCuenta === ADMIN_EMAIL ? 'Administrador' : ''));
+    mostrarToast(emailCuenta === ADMIN_EMAIL
+      ? '👑 ¡Bienvenido, Administrador!'
+      : '👋 ¡Sesión iniciada con éxito!');
   };
 
   const agregarAlCarrito = (itemOrTitulo, precio, imagen) => {
@@ -138,99 +297,85 @@ export default function App() {
     mostrarToast('🎉 ¡Gracias por tu compra! Tu pedido ha sido procesado.');
   };
 
-  const handleLoginSuccess = (email, password) => {
-    const emailNormalizado = email.trim().toLowerCase();
-    if (emailNormalizado === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
-      guardarSesion(emailNormalizado);
-      setUsuario(emailNormalizado);
-      setNombreUsuario('Administrador');
-      setComprasUsuario([]);
-      mostrarToast('👑 ¡Bienvenido, Administrador!');
-      return true;
-    } else {
-      const cuenta = leerUsuarios().find(
-        (usuarioGuardado) => usuarioGuardado.email === emailNormalizado
-          && usuarioGuardado.password === password
-      );
-      if (!cuenta) return false;
-
-      guardarSesion(cuenta.email);
-      setUsuario(cuenta.email);
-      setNombreUsuario(cuenta.nombre);
-      setComprasUsuario(cuenta.compras || []);
-      mostrarToast('👋 ¡Sesión iniciada con éxito!');
-      return true;
+  const refrescarCatalogo = async () => {
+    setRefrescandoCatalogo(true);
+    try {
+      setLibros(await cargarCatalogoServidor());
+      setErrorCatalogo('');
+    } catch (error) {
+      setErrorCatalogo(error instanceof Error
+        ? `No se pudo actualizar el catálogo: ${error.message}`
+        : 'No se pudo actualizar el catálogo.');
+    } finally {
+      setRefrescandoCatalogo(false);
     }
   };
 
-  const handleRegister = ({ nombre, email, password }) => {
+  const handleLoginSuccess = async (email, password) => {
     const emailNormalizado = email.trim().toLowerCase();
-    const usuariosGuardados = leerUsuarios();
-    if (
-      !nombre
-      || emailNormalizado === ADMIN_EMAIL
-      || usuariosGuardados.some((cuenta) => cuenta.email === emailNormalizado)
-    ) {
-      return false;
+    const respuesta = await loginUsuario({ email: emailNormalizado, password });
+    if (!leerTokenRespuesta(respuesta)) {
+      throw new Error('El servidor inició sesión sin devolver un token de acceso.');
     }
+    guardarSesionApi(respuesta, emailNormalizado);
+    return true;
+  };
 
-    const nuevaCuenta = {
+  const handleRegister = async ({ nombre, email, password }) => {
+    const emailNormalizado = email.trim().toLowerCase();
+    const respuesta = await registrarUsuario({
       nombre,
       email: emailNormalizado,
-      password,
-      compras: []
-    };
-    guardarUsuarios([...usuariosGuardados, nuevaCuenta]);
-    guardarSesion(emailNormalizado);
-    setUsuario(emailNormalizado);
-    setNombreUsuario(nombre);
-    setComprasUsuario([]);
-    mostrarToast('✅ Cuenta creada correctamente. ¡Bienvenido!');
+      password
+    });
+
+    if (!leerTokenRespuesta(respuesta)) return 'login-required';
+
+    guardarSesionApi(respuesta, emailNormalizado);
     return true;
   };
 
   const handleLogout = () => {
-    borrarSesion();
+    localStorage.removeItem('token');
     setUsuario(null);
     setNombreUsuario('');
     setComprasUsuario([]);
+    setCargandoCompras(false);
+    setErrorCompras('');
     mostrarToast('🔒 Sesión cerrada');
   };
 
-  const registrarCompra = (nuevoPedido) => {
-    if (usuario && usuario !== ADMIN_EMAIL) {
-      const usuariosGuardados = leerUsuarios();
-      const cuenta = usuariosGuardados.find((usuarioGuardado) => usuarioGuardado.email === usuario);
-      if (!cuenta) {
-        throw new Error('No se encontró la cuenta activa para guardar la compra.');
-      }
+  const registrarCompra = async (nuevoPedido) => {
+    const respuesta = await crearPedido(nuevoPedido);
+    const pedidoRespuesta = respuesta?.pedido || respuesta?.order || respuesta;
+    const pedidoConfirmado = pedidoRespuesta && typeof pedidoRespuesta === 'object'
+      ? {
+          ...nuevoPedido,
+          ...pedidoRespuesta,
+          items: Array.isArray(pedidoRespuesta.items) ? pedidoRespuesta.items : nuevoPedido.items,
+          clienteEmail: pedidoRespuesta.clienteEmail
+            || pedidoRespuesta.cliente?.email
+            || nuevoPedido.cliente?.email,
+          detalleProductos: pedidoRespuesta.detalleProductos
+            || nuevoPedido.detalleProductos
+            || nuevoPedido.items?.map((item) => `${item.titulo} (Cant: ${item.cantidad || 1})`).join(', ')
+        }
+      : nuevoPedido;
 
-      const comprasActualizadas = [nuevoPedido, ...(cuenta.compras || [])];
-      guardarUsuarios(usuariosGuardados.map((usuarioGuardado) => (
-        usuarioGuardado.email === usuario
-          ? { ...usuarioGuardado, compras: comprasActualizadas }
-          : usuarioGuardado
-      )));
-      setComprasUsuario(comprasActualizadas);
+    if (usuario && usuario !== ADMIN_EMAIL) {
+      setComprasUsuario((pedidos) => [pedidoConfirmado, ...pedidos]);
     }
 
-    setLibros((prev) =>
-      prev.map((libro) => {
-        const itemComprado = nuevoPedido.items.find((item) =>
-          item.id != null && libro.id != null
-            ? item.id === libro.id
-            : item.titulo === libro.titulo
-        );
-
-        if (!itemComprado) return libro;
-
-        return {
-          ...libro,
-          stock: Math.max(0, (libro.stock ?? 10) - (itemComprado.cantidad || 1))
-        };
-      })
-    );
     setCarrito([]);
+
+    try {
+      setLibros(await cargarCatalogoServidor());
+      setErrorCatalogo('');
+    } catch (error) {
+      setErrorCatalogo(error instanceof Error
+        ? `El pedido se registró, pero el catálogo no se pudo actualizar: ${error.message}`
+        : 'El pedido se registró, pero no se pudo actualizar el catálogo.');
+    }
   };
 
   // Funciones de administración del inventario
@@ -239,16 +384,31 @@ export default function App() {
     mostrarToast('📚 ¡Libro agregado al catálogo con éxito!');
   };
 
-  const eliminarLibroAdmin = (id) => {
-    setLibros((prev) => prev.filter((libro) => libro.id !== id));
+  const eliminarLibroAdmin = (libroAEliminar) => {
+    setLibros((prev) => prev.filter((libro) => libro !== libroAEliminar));
     mostrarToast('🗑️ Libro eliminado del catálogo');
   };
 
-  const actualizarStockAdmin = (id, nuevoStock) => {
-    setLibros((prev) =>
-      prev.map((libro) => (libro.id === id ? { ...libro, stock: Number(nuevoStock) } : libro))
+  const actualizarLibroAdmin = async (libroOriginal, cambios) => {
+    if (libroOriginal.id == null) {
+      throw new Error('No se puede actualizar un libro sin identificador.');
+    }
+
+    const libroEnviado = { ...libroOriginal, ...cambios };
+    const respuesta = await actualizarLibro(libroOriginal.id, libroEnviado);
+    const datos = leerDatosRespuesta(respuesta);
+    const libroActualizado = datos?.libro || datos?.book || datos;
+
+    if (!libroActualizado || typeof libroActualizado !== 'object' || libroActualizado.id == null) {
+      throw new Error('El servidor no devolvió el libro actualizado.');
+    }
+
+    setLibros((actuales) =>
+      actuales.map((libro) => (
+        String(libro.id) === String(libroActualizado.id) ? libroActualizado : libro
+      ))
     );
-    mostrarToast('⚡ Stock actualizado correctamente');
+    mostrarToast('✏️ Libro actualizado correctamente');
   };
 
   return (
@@ -257,6 +417,9 @@ export default function App() {
         cartCount={carrito.reduce((acc, item) => acc + (item.cantidad || 1), 0)}
         usuario={usuario}
       />
+
+      {cargandoCatalogo && <p role="status" style={{ textAlign: 'center', padding: '12px' }}>Cargando catálogo…</p>}
+      {errorCatalogo && <p role="alert" style={{ textAlign: 'center', padding: '12px', color: '#c0392b' }}>{errorCatalogo}</p>}
 
       <Routes>
         <Route
@@ -303,7 +466,9 @@ export default function App() {
                 libros={libros}
                 onAgregarLibro={agregarLibroAdmin}
                 onEliminarLibro={eliminarLibroAdmin}
-                onActualizarStock={actualizarStockAdmin}
+                onActualizarLibro={actualizarLibroAdmin}
+                onRefrescarCatalogo={refrescarCatalogo}
+                refrescandoCatalogo={refrescandoCatalogo}
                 onLogout={handleLogout}
               />
             ) : usuario ? (
@@ -311,6 +476,8 @@ export default function App() {
                 usuario={usuario} 
                 nombre={nombreUsuario}
                 compras={comprasUsuario} 
+                cargandoCompras={cargandoCompras}
+                errorCompras={errorCompras}
                 onLogout={handleLogout} 
               />
             ) : (

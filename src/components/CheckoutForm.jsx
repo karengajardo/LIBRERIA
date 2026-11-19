@@ -17,7 +17,7 @@ const ciudadesPorRegion = {
   "Magallanes y de la Antártica Chilena": ["Punta Arenas", "Puerto Natales", "Porvenir"]
 };
 
-export function CheckoutForm({ formData, onChange, onSubmit, total }) {
+export function CheckoutForm({ formData, onChange, onSubmit, total, enviando = false, mensajeError = '' }) {
   return (
     <form onSubmit={onSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
       <h3 style={{ fontFamily: "'Merriweather', serif", color: '#2c3e50' }}>Datos de Envío</h3>
@@ -73,10 +73,16 @@ export function CheckoutForm({ formData, onChange, onSubmit, total }) {
 
       <button 
         type="submit" 
+        disabled={enviando}
         style={{ backgroundColor: '#27ae60', color: 'white', padding: '15px', fontSize: '1.1rem', border: 'none', borderRadius: '30px', cursor: 'pointer', fontWeight: 'bold', marginTop: '10px' }}
       >
-        Confirmar y Pagar {total}
+        {enviando ? 'Procesando compra...' : `Confirmar y Pagar ${total}`}
       </button>
+      {mensajeError && (
+        <p role="alert" style={{ color: '#c0392b', margin: 0 }}>
+          No se pudo completar la compra: {mensajeError}
+        </p>
+      )}
     </form>
   );
 }

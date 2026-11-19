@@ -1,4 +1,4 @@
-export function LoginForm({ formData, onChange, onSubmit, esRegistro = false }) {
+export function LoginForm({ formData, onChange, onSubmit, esRegistro = false, enviando = false }) {
   return (
     <form onSubmit={onSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
       {esRegistro && (
@@ -69,9 +69,10 @@ export function LoginForm({ formData, onChange, onSubmit, esRegistro = false }) 
 
       <button 
         type="submit" 
+        disabled={enviando}
         style={{ backgroundColor: '#2c3e50', color: 'white', padding: '15px', fontSize: '1.1rem', border: 'none', borderRadius: '30px', cursor: 'pointer', fontWeight: 'bold', marginTop: '10px' }}
       >
-        {esRegistro ? 'Crear Cuenta' : 'Iniciar Sesión'}
+        {enviando ? 'Conectando...' : esRegistro ? 'Crear Cuenta' : 'Iniciar Sesión'}
       </button>
     </form>
   );

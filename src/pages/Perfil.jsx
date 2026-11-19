@@ -1,7 +1,14 @@
 import { Link } from 'react-router-dom';
 import { ProfileOrders } from '../components/ProfileOrders';
 
-export function Perfil({ usuario, nombre, compras = [], onLogout }) {
+export function Perfil({
+  usuario,
+  nombre,
+  compras = [],
+  cargandoCompras = false,
+  errorCompras = '',
+  onLogout
+}) {
   if (!usuario) {
     return (
       <div style={{ textAlign: 'center', padding: '100px 20px', maxWidth: '600px', margin: '0 auto' }}>
@@ -20,7 +27,7 @@ export function Perfil({ usuario, nombre, compras = [], onLogout }) {
 
   return (
     <main className="container" style={{ padding: '40px 20px', maxWidth: '800px', margin: '0 auto' }}>
-      <div style={{ backgroundColor: '#f9f9f9', padding: '30px', borderRadius: '8px', border: '1px solid #e1e1e1', marginBottom: '30px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div className="perfil-header" style={{ backgroundColor: '#f9f9f9', padding: '30px', borderRadius: '8px', border: '1px solid #e1e1e1', marginBottom: '30px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
           <h2 style={{ fontFamily: "'Merriweather', serif", color: '#2c3e50', fontSize: '2rem', marginBottom: '5px' }}>
             Mi Cuenta
@@ -39,7 +46,9 @@ export function Perfil({ usuario, nombre, compras = [], onLogout }) {
       </div>
 
       {/* Componente modular del historial de compras */}
-      <ProfileOrders compras={compras} />
+      {cargandoCompras && <p role="status">Cargando historial de pedidos…</p>}
+      {errorCompras && <p role="alert" style={{ color: '#c0392b' }}>No se pudo cargar el historial: {errorCompras}</p>}
+      {!cargandoCompras && !errorCompras && <ProfileOrders compras={compras} usuario={usuario} />}
     </main>
   );
 }

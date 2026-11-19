@@ -18,9 +18,9 @@ export function AdminForm({ onAgregarLibro }) {
   };
 
   return (
-    <section style={{ backgroundColor: '#f9f9f9', padding: '25px', borderRadius: '8px', border: '1px solid #e1e1e1', marginBottom: '40px' }}>
+    <section className="admin-book-form" style={{ backgroundColor: '#f9f9f9', padding: '25px', borderRadius: '8px', border: '1px solid #e1e1e1', marginBottom: '40px' }}>
       <h3 style={{ fontFamily: "'Merriweather', serif", color: '#2c3e50', marginBottom: '20px' }}>Agregar Nuevo Libro</h3>
-      <form onSubmit={handleSubmit} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
+      <form className="admin-book-form-grid" onSubmit={handleSubmit} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
         <input 
           type="text" 
           placeholder="Título del libro" 

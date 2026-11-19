@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
 import { BookCard } from '../components/BookCard';
+import { dividirLibrosPortada } from '../utils/librosPortada';
 
 export function Home({ libros = [], carrito = [], onAddToCart }) {
-  // Tomamos los primeros 3 o 6 libros como destacados
-  const librosDestacados = libros.slice(0, 6);
+  const { destacados: librosDestacados } = dividirLibrosPortada(libros);
 
   return (
     <div>
@@ -18,7 +18,7 @@ export function Home({ libros = [], carrito = [], onAddToCart }) {
 
       {/* LIBROS DESTACADOS */}
       <main className="container">
-        <h2 className="section-title">Destacados de la Semana</h2>
+        <h2 className="section-title">Últimas unidades</h2>
 
         <div className="book-grid">
           {librosDestacados.map((libro) => {

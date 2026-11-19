@@ -1193,3 +1193,324 @@ footer p {
 .search-input:focus {
   border-color: #2c3e50;
 }
+
+@media (max-width: 900px) {
+    .navbar {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 14px;
+        padding: 14px 22px;
+    }
+
+    .navbar-logo {
+        flex: 1 1 100%;
+        text-align: center;
+    }
+
+    .navbar-links {
+        flex: 1 1 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 12px 20px;
+    }
+
+    .navbar-search {
+        width: min(100%, 400px);
+    }
+
+    .search-input {
+        width: 100%;
+        min-height: 42px;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        width: 100%;
+        margin-top: 32px;
+        margin-bottom: 32px;
+        padding-right: 16px;
+        padding-left: 16px;
+    }
+
+    .hero {
+        padding: 72px 20px;
+    }
+
+    .hero h1 {
+        font-size: clamp(2rem, 8vw, 2.8rem);
+    }
+
+    .hero p {
+        font-size: 1rem;
+    }
+
+    .section-title {
+        margin-bottom: 28px;
+        font-size: 1.7rem;
+    }
+
+    .book-grid,
+    .books-grid {
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+        gap: 20px;
+        padding-right: 0;
+        padding-left: 0;
+    }
+
+    .book-card {
+        max-width: none;
+    }
+
+    .catalogo-banner,
+    .novedades-banner,
+    .contacto-banner,
+    .carrito-banner {
+        padding: 42px 18px;
+    }
+
+    .catalogo-banner h2,
+    .novedades-banner h2,
+    .contacto-banner h2,
+    .carrito-banner h2 {
+        font-size: clamp(1.8rem, 7vw, 2.6rem);
+    }
+
+    .catalogo-banner p,
+    .novedades-banner p,
+    .contacto-banner p,
+    .carrito-banner p {
+        font-size: 1rem;
+    }
+
+    .filtros-categorias {
+        gap: 10px;
+        margin: 24px auto;
+        padding: 0 0 24px;
+    }
+
+    .btn-categoria {
+        padding: 9px 16px;
+        font-size: 0.9rem;
+    }
+
+    .checkout-layout {
+        grid-template-columns: minmax(0, 1fr) !important;
+        gap: 24px !important;
+    }
+
+    .checkout-title {
+        font-size: 1.8rem !important;
+    }
+
+    .checkout-success {
+        padding: 64px 20px !important;
+    }
+
+    .checkout-success h2 {
+        font-size: 2rem !important;
+    }
+
+    .carrito-content {
+        padding: 24px 14px;
+    }
+
+    .carrito-container {
+        padding: 18px 14px;
+    }
+
+    .carrito-resumen {
+        margin: 30px 0 16px !important;
+    }
+
+    .carrito-total-texto {
+        font-size: 1.7rem !important;
+    }
+
+    .item-carrito {
+        align-items: flex-start;
+        padding: 14px;
+    }
+
+    .item-info {
+        min-width: 0;
+        flex: 1 1 100%;
+    }
+
+    .item-titulo {
+        overflow-wrap: anywhere;
+    }
+
+    .item-controles {
+        width: 100%;
+        justify-content: flex-start;
+        gap: 12px;
+    }
+
+    .detalle-layout {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 28px;
+        margin: 32px auto;
+    }
+
+    .detalle-portada {
+        width: 100%;
+        max-width: 320px;
+        margin: 0 auto;
+    }
+
+    .detalle-titulo {
+        font-size: clamp(2rem, 8vw, 2.6rem);
+        overflow-wrap: anywhere;
+    }
+
+    .detalle-sinopsis {
+        font-size: 1rem;
+    }
+
+    .contact-wrapper {
+        gap: 24px;
+        padding: 22px !important;
+    }
+
+    .contact-form,
+    .contact-info {
+        min-width: 0;
+        width: 100%;
+    }
+
+    .comunidad-links {
+        flex-wrap: wrap;
+    }
+
+    .perfil-header,
+    .admin-header {
+        flex-direction: column;
+        align-items: stretch !important;
+        gap: 20px;
+        padding: 22px !important;
+    }
+
+    .perfil-header button,
+    .admin-header button {
+        align-self: flex-start;
+    }
+
+    .admin-header-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .admin-book-form {
+        padding: 18px !important;
+    }
+
+    .admin-book-form-grid {
+        grid-template-columns: minmax(0, 1fr) !important;
+    }
+
+    .admin-book-form-grid > * {
+        grid-column: 1 / -1 !important;
+    }
+
+    .admin-book-form-grid input {
+        width: 100%;
+        min-width: 0;
+    }
+
+    footer {
+        padding: 24px 16px;
+    }
+
+    footer p {
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .navbar {
+        gap: 12px;
+        padding: 12px 14px;
+    }
+
+    .navbar-logo a {
+        font-size: 1.45rem;
+    }
+
+    .navbar-links {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+    }
+
+    .navbar-links a {
+        justify-content: center;
+        min-height: 40px;
+        padding: 6px 4px;
+        border-radius: 6px;
+        background: #f7f8fa;
+        font-size: 0.82rem;
+        text-align: center;
+    }
+
+    .navbar-search {
+        width: 100%;
+    }
+
+    .search-input {
+        font-size: 16px;
+    }
+
+    .container {
+        padding-right: 14px;
+        padding-left: 14px;
+    }
+
+    .book-grid,
+    .books-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 16px;
+    }
+
+    .book-card {
+        max-width: 360px;
+    }
+
+    .carrito-content {
+        padding-right: 10px;
+        padding-left: 10px;
+    }
+
+    .carrito-container {
+        padding: 14px 10px;
+    }
+
+    .item-controles {
+        gap: 10px;
+    }
+
+    .btn-eliminar {
+        margin-left: auto;
+    }
+
+    .checkout-success h2 {
+        font-size: 1.7rem !important;
+    }
+
+    .checkout-success p {
+        font-size: 1rem !important;
+        overflow-wrap: anywhere;
+    }
+
+    .perfil-header p {
+        overflow-wrap: anywhere;
+    }
+}
+
+@media (max-width: 380px) {
+    .navbar-links {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}

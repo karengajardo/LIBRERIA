@@ -4,6 +4,8 @@ import { CheckoutForm } from '../components/CheckoutForm';
 import { CheckoutSummary } from '../components/CheckoutSummary';
 
 export function Checkout({ carrito = [], usuario, nombreUsuario, onRegistrarCompra }) {
+  const [procesandoCompra, setProcesandoCompra] = useState(false);
+  const [mensajeError, setMensajeError] = useState('');
   const [formData, setFormData] = useState({
     nombre: nombreUsuario || '',
     email: usuario || '',
@@ -36,15 +38,21 @@ export function Checkout({ carrito = [], usuario, nombreUsuario, onRegistrarComp
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (carrito.length === 0) return;
+    if (carrito.length === 0 || procesandoCompra) return;
 
-    onRegistrarCompra({
+    setProcesandoCompra(true);
+    setMensajeError('');
+    const pedido = {
       cliente: {
         nombre: formData.nombre,
         email: formData.email
       },
+      direccion: formData.direccion,
+      region: formData.region,
+      ciudad: formData.ciudad,
+      metodoPago: formData.metodoPago,
       fecha: new Date().toLocaleDateString('es-CL', {
         day: 'numeric',
         month: 'long',
@@ -57,13 +65,23 @@ export function Checkout({ carrito = [], usuario, nombreUsuario, onRegistrarComp
         cantidad: cantidad || 1,
         precio
       }))
-    });
-    setCompraExitosa(true);
+    };
+
+    try {
+      await onRegistrarCompra(pedido);
+      setCompraExitosa(true);
+    } catch (error) {
+      setMensajeError(error instanceof Error
+        ? error.message
+        : 'No se pudo procesar el pedido. Intenta nuevamente.');
+    } finally {
+      setProcesandoCompra(false);
+    }
   };
 
   if (compraExitosa) {
     return (
-      <div style={{ textAlign: 'center', padding: '100px 20px', maxWidth: '600px', margin: '0 auto' }}>
+      <div className="checkout-success" style={{ textAlign: 'center', padding: '100px 20px', maxWidth: '600px', margin: '0 auto' }}>
         <h2 style={{ fontFamily: "'Merriweather', serif", color: '#27ae60', fontSize: '2.5rem', marginBottom: '20px' }}>
           ¡Compra realizada con éxito! 📚✨
         </h2>
@@ -79,8 +97,8 @@ export function Checkout({ carrito = [], usuario, nombreUsuario, onRegistrarComp
 
   return (
     <main className="container" style={{ padding: '40px 20px', maxWidth: '900px' }}>
-      <h2 style={{ fontFamily: "'Merriweather', serif", color: '#2c3e50', fontSize: '2.2rem', marginBottom: '30px', textAlign: 'center' }}>
-        Finalizar Compra (Checkout)
+      <h2 className="checkout-title" style={{ fontFamily: "'Merriweather', serif", color: '#2c3e50', fontSize: '2.2rem', marginBottom: '30px', textAlign: 'center' }}>
+        Finalizar Compra
       </h2>
 
       {carrito.length === 0 ? (
@@ -89,12 +107,14 @@ export function Checkout({ carrito = [], usuario, nombreUsuario, onRegistrarComp
           <Link to="/catalogo" className="btn">Ir al catálogo</Link>
         </div>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px' }}>
+        <div className="checkout-layout" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px' }}>
           <CheckoutForm 
             formData={formData} 
             onChange={handleChange} 
             onSubmit={handleSubmit} 
-            total={calcularTotal()} 
+            total={calcularTotal()}
+            enviando={procesandoCompra}
+            mensajeError={mensajeError}
           />
 
           <CheckoutSummary 

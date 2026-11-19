@@ -60,8 +60,8 @@ export function Carrito({
             </div>
             
             {/* Resumen final y botón de redirección al Checkout */}
-            <div style={{ textAlign: 'center', margin: '50px 0 20px 0' }}>
-              <h2 style={{ fontSize: '2.2rem', color: '#2c3e50', fontFamily: "'Merriweather', serif" }}>
+            <div className="carrito-resumen" style={{ textAlign: 'center', margin: '50px 0 20px 0' }}>
+              <h2 className="carrito-total-texto" style={{ fontSize: '2.2rem', color: '#2c3e50', fontFamily: "'Merriweather', serif" }}>
                 Total a pagar: <span style={{ color: '#e74c3c' }}>{calcularTotal()}</span>
               </h2>
               <Link
